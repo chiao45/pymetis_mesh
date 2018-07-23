@@ -2,6 +2,10 @@
 
 This repository contains a simple wrapper of `METIS_PartMeshDual` and `METIS_PartMeshNodal`, which can partition finite element unstructured meshes either element-wisely or node-wisely, resp. The wrapper script is written in Cython, and the C code has been already generated. Notice that regenerating the C source code is pretty straightforward.
 
+## Installations
+
+`pymetis_mesh` only requires numpy during installation.
+
 ## License
 
 MIT License
