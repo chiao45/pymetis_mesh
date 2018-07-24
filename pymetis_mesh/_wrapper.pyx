@@ -1,7 +1,12 @@
 #!python
 #cython: boundscheck=False, embedsignature=True, wraparound=False
 
-"""METIS wrapper for partitioning *finite element meshes*"""
+"""METIS wrapper for partitioning `finite element` (FE) meshes
+
+This module is designed to wrap around the two METIS routines for partitioning
+FE meshes either in node-wise or element-wise setting. This routine is designed
+to map to the original APIs with numpy ndarrays as input/output arguments.
+"""
 
 cimport numpy as np
 import numpy as np
@@ -72,6 +77,49 @@ def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,
     int nparts, *, int ncommon=1, idx_t[::1] vwgt=None, idx_t[::1] vsize=None,
     real_t[::1] tpwgts=None, one_base=False, elemental=True,
     idx_t[::1] epart=None, idx_t[::1] npart=None):
+    """The main partition interface
+
+    Parameters
+    ----------
+    nv : int
+        number of nodes
+    eptr : memory view
+        element pointer array, size of ne-1, where ne is the number of elements
+    eind : memory view
+        flattened connectivity table
+    nparts : int
+        number of partitions
+    ncommon : int (optional)
+        number of shared nodes that forms a cut, elemental part only
+    vwgt : memory view (optional)
+        weights of primary entity type
+    vsize : memory view (optional)
+        communication volumes of primary entity type
+    tpwgts : memory view (optional)
+        weights for partitions
+    one_base : bool (optional)
+        ``True`` if using Fortran-based index
+    elemental : bool (optional)
+        ``True`` if doing element-based partition
+    epart : memory view (optional)
+        buffer output of element partition
+    npart : memory view (optional)
+        buffer output of node partition
+
+    Returns
+    -------
+    dict with keys ``cuts``, ``epart``, ``npart``
+        cuts, epart, npart
+
+    Examples
+    --------
+    >>> from pymetis_mesh import *
+    >>> import numpy as np
+    >>> eptr = np.asarray([0, 3, 6], dtype='int32')
+    >>> # two triangles, 4 nodes
+    >>> eind = np.asarray([0, 1, 2, 0, 2, 3], dtype='int32')
+    >>> outputs = part_mesh(4, eptr, eind, 2) # elemental wise two-part
+    """
     cdef:
         # inputs
         idx_t _nparts = nparts
@@ -88,8 +136,8 @@ def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,
         np.ndarray[np.int32_t, ndim=1] _epart
         np.ndarray[np.int32_t, ndim=1] _npart
     assert _nparts > 0
-    assert _vwgt == NULL or len(vwgt) == _ne
-    assert _vsize == NULL or len(vsize) == _ne
+    assert _vwgt == NULL or (len(vwgt) == _ne and elemental) or len(vwgt) == _nv
+    assert _vsize == NULL or (len(vsize) == _ne and elemental) or len(vwgt) == _nv
     assert _tpwgts == NULL or len(tpwgts) == _nparts
     if epart is None:
         _epart = np.empty(_ne, dtype=np.int32)
@@ -113,7 +161,7 @@ def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,
             <idx_t *> &eind[0], _vwgt, _vsize, &_nparts, _tpwgts, opts, &objval,
             <idx_t *> _epart.data, <idx_t *> _npart.data)
     if ret == 1:
-        return (objval, _epart, _npart)
+        return {'cuts': objval, 'epart': _epart, 'npart': _npart}
     elif ret == err_in:
         raise MetisInputError('invalid input arguments')
     elif ret == err_mem:

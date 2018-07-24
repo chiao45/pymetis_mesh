@@ -4,7 +4,7 @@ This repository contains a simple wrapper of `METIS_PartMeshDual` and `METIS_Par
 
 ## Installations
 
-`pymetis_mesh` only requires numpy during installation.
+`pymetis_mesh` only requires numpy during installation. Also, tune `setup.cfg` for your metis installation.
 
 ## License
 

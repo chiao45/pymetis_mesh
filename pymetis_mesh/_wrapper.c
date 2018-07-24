@@ -1990,6 +1990,7 @@ static const char __pyx_k_new[] = "__new__";
 static const char __pyx_k_obj[] = "obj";
 static const char __pyx_k_ret[] = "ret";
 static const char __pyx_k_base[] = "base";
+static const char __pyx_k_cuts[] = "cuts";
 static const char __pyx_k_dict[] = "__dict__";
 static const char __pyx_k_eind[] = "eind";
 static const char __pyx_k_eptr[] = "eptr";
@@ -2085,6 +2086,7 @@ static const char __pyx_k_dtype_is_object[] = "dtype_is_object";
 static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_MetisMemoryError[] = "MetisMemoryError";
+static const char __pyx_k_part_mesh_line_76[] = "part_mesh (line 76)";
 static const char __pyx_k_pyx_unpickle_Enum[] = "__pyx_unpickle_Enum";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_strided_and_direct[] = "<strided and direct>";
@@ -2113,9 +2115,10 @@ static const char __pyx_k_Format_string_allocated_too_shor[] = "Format string al
 static const char __pyx_k_Incompatible_checksums_s_vs_0xb0[] = "Incompatible checksums (%s vs 0xb068931 = (name))";
 static const char __pyx_k_Indirect_dimensions_not_supporte[] = "Indirect dimensions not supported";
 static const char __pyx_k_Invalid_mode_expected_c_or_fortr[] = "Invalid mode, expected 'c' or 'fortran', got %s";
-static const char __pyx_k_METIS_wrapper_for_partitioning_f[] = "METIS wrapper for partitioning *finite element meshes*";
+static const char __pyx_k_METIS_wrapper_for_partitioning_f[] = "METIS wrapper for partitioning `finite element` (FE) meshes\n\nThis module is designed to wrap around the two METIS routines for partitioning\nFE meshes either in node-wise or element-wise setting. This routine is designed\nto map to the original APIs with numpy ndarrays as input/output arguments.\n";
 static const char __pyx_k_Non_native_byte_order_not_suppor[] = "Non-native byte order not supported";
 static const char __pyx_k_Out_of_bounds_on_buffer_access_a[] = "Out of bounds on buffer access (axis %d)";
+static const char __pyx_k_The_main_partition_interface_Par[] = "The main partition interface\n\n    Parameters\n    ----------\n    nv : int\n        number of nodes\n    eptr : memory view\n        element pointer array, size of ne-1, where ne is the number of elements\n    eind : memory view\n        flattened connectivity table\n    nparts : int\n        number of partitions\n    ncommon : int (optional)\n        number of shared nodes that forms a cut, elemental part only\n    vwgt : memory view (optional)\n        weights of primary entity type\n    vsize : memory view (optional)\n        communication volumes of primary entity type\n    tpwgts : memory view (optional)\n        weights for partitions\n    one_base : bool (optional)\n        ``True`` if using Fortran-based index\n    elemental : bool (optional)\n        ``True`` if doing element-based partition\n    epart : memory view (optional)\n        buffer output of element partition\n    npart : memory view (optional)\n        buffer output of node partition\n\n    Returns\n    -------\n    dict with keys ``cuts``, ``epart``, ``npart``\n        cuts, epart, npart\n\n    Examples\n    --------\n    >>> from pymetis_mesh import *\n    >>> import numpy as np\n    >>> eptr = np.asarray([0, 3, 6], dtype='int32')\n    >>> # two triangles, 4 nodes\n    >>> eind = np.asarray([0, 1, 2, 0, 2, 3], dtype='int32')\n    >>> outputs = part_mesh(4, eptr, eind, 2) # elemental wise two-part\n    ";
 static const char __pyx_k_Unable_to_convert_item_to_object[] = "Unable to convert item to object";
 static const char __pyx_k_got_differing_extents_in_dimensi[] = "got differing extents in dimension %d (got %d and %d)";
 static const char __pyx_k_ndarray_is_not_Fortran_contiguou[] = "ndarray is not Fortran contiguous";
@@ -2151,6 +2154,7 @@ static PyObject *__pyx_kp_s_Out_of_bounds_on_buffer_access_a;
 static PyObject *__pyx_n_s_PickleError;
 static PyObject *__pyx_kp_s_Qiao_Chen;
 static PyObject *__pyx_n_s_RuntimeError;
+static PyObject *__pyx_kp_u_The_main_partition_interface_Par;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_kp_s_Unable_to_convert_item_to_object;
 static PyObject *__pyx_n_s_ValueError;
@@ -2167,6 +2171,7 @@ static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_kp_s_contiguous_and_direct;
 static PyObject *__pyx_kp_s_contiguous_and_indirect;
 static PyObject *__pyx_n_s_copyright;
+static PyObject *__pyx_n_s_cuts;
 static PyObject *__pyx_n_s_dict;
 static PyObject *__pyx_n_s_doc;
 static PyObject *__pyx_n_s_dtype;
@@ -2223,6 +2228,7 @@ static PyObject *__pyx_n_s_one_base;
 static PyObject *__pyx_n_s_opts;
 static PyObject *__pyx_n_s_pack;
 static PyObject *__pyx_n_s_part_mesh;
+static PyObject *__pyx_kp_u_part_mesh_line_76;
 static PyObject *__pyx_n_s_pickle;
 static PyObject *__pyx_n_s_prepare;
 static PyObject *__pyx_n_s_pymetis_mesh__wrapper;
@@ -2367,7 +2373,7 @@ static PyObject *__pyx_tuple__44;
 static PyObject *__pyx_codeobj__38;
 static PyObject *__pyx_codeobj__45;
 
-/* "pymetis_mesh/_wrapper.pyx":71
+/* "pymetis_mesh/_wrapper.pyx":76
  * 
  * 
  * def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,             # <<<<<<<<<<<<<<
@@ -2377,7 +2383,7 @@ static PyObject *__pyx_codeobj__45;
 
 /* Python wrapper */
 static PyObject *__pyx_pw_12pymetis_mesh_8_wrapper_1part_mesh(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_12pymetis_mesh_8_wrapper_part_mesh[] = "part_mesh(int nv, __Pyx_memviewslice eptr, __Pyx_memviewslice eind, int nparts, *, int ncommon=1, __Pyx_memviewslice vwgt=None, __Pyx_memviewslice vsize=None, __Pyx_memviewslice tpwgts=None, one_base=False, elemental=True, __Pyx_memviewslice epart=None, __Pyx_memviewslice npart=None)";
+static char __pyx_doc_12pymetis_mesh_8_wrapper_part_mesh[] = "part_mesh(int nv, __Pyx_memviewslice eptr, __Pyx_memviewslice eind, int nparts, *, int ncommon=1, __Pyx_memviewslice vwgt=None, __Pyx_memviewslice vsize=None, __Pyx_memviewslice tpwgts=None, one_base=False, elemental=True, __Pyx_memviewslice epart=None, __Pyx_memviewslice npart=None)\nThe main partition interface\n\n    Parameters\n    ----------\n    nv : int\n        number of nodes\n    eptr : memory view\n        element pointer array, size of ne-1, where ne is the number of elements\n    eind : memory view\n        flattened connectivity table\n    nparts : int\n        number of partitions\n    ncommon : int (optional)\n        number of shared nodes that forms a cut, elemental part only\n    vwgt : memory view (optional)\n        weights of primary entity type\n    vsize : memory view (optional)\n        communication volumes of primary entity type\n    tpwgts : memory view (optional)\n        weights for partitions\n    one_base : bool (optional)\n        ``True`` if using Fortran-based index\n    elemental : bool (optional)\n        ``True`` if doing element-based partition\n    epart : memory view (optional)\n        buffer output of element partition\n    npart : memory view (optional)\n        buffer output of node partition\n\n    Returns\n    -------\n    dict with keys ``cuts``, ``epart``, ``npart``\n        cuts, epart, npart\n\n    Examples\n    --------\n    >>> from pymetis_mesh import *\n    >>> import numpy as np\n    >>> eptr = np.asarray([0, 3, 6], dtype='int32')\n    >>> # two triangles, 4 nodes\n    >>> eind = np.asarray([0, 1, 2, 0, 2, 3], dtype='int32')\n    >>> outputs = part_mesh(4, eptr, eind, 2) # elemental wise two-part\n    ";
 static PyMethodDef __pyx_mdef_12pymetis_mesh_8_wrapper_1part_mesh = {"part_mesh", (PyCFunction)__pyx_pw_12pymetis_mesh_8_wrapper_1part_mesh, METH_VARARGS|METH_KEYWORDS, __pyx_doc_12pymetis_mesh_8_wrapper_part_mesh};
 static PyObject *__pyx_pw_12pymetis_mesh_8_wrapper_1part_mesh(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_v_nv;
@@ -2399,12 +2405,12 @@ static PyObject *__pyx_pw_12pymetis_mesh_8_wrapper_1part_mesh(PyObject *__pyx_se
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_nv,&__pyx_n_s_eptr,&__pyx_n_s_eind,&__pyx_n_s_nparts,&__pyx_n_s_ncommon,&__pyx_n_s_vwgt,&__pyx_n_s_vsize,&__pyx_n_s_tpwgts,&__pyx_n_s_one_base,&__pyx_n_s_elemental,&__pyx_n_s_epart,&__pyx_n_s_npart,0};
     PyObject* values[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
 
-    /* "pymetis_mesh/_wrapper.pyx":73
+    /* "pymetis_mesh/_wrapper.pyx":78
  * def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,
  *     int nparts, *, int ncommon=1, idx_t[::1] vwgt=None, idx_t[::1] vsize=None,
  *     real_t[::1] tpwgts=None, one_base=False, elemental=True,             # <<<<<<<<<<<<<<
  *     idx_t[::1] epart=None, idx_t[::1] npart=None):
- *     cdef:
+ *     """The main partition interface
  */
     values[8] = ((PyObject *)Py_False);
     values[9] = ((PyObject *)Py_True);
@@ -2432,19 +2438,19 @@ static PyObject *__pyx_pw_12pymetis_mesh_8_wrapper_1part_mesh(PyObject *__pyx_se
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_eptr)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("part_mesh", 1, 4, 4, 1); __PYX_ERR(0, 71, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("part_mesh", 1, 4, 4, 1); __PYX_ERR(0, 76, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_eind)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("part_mesh", 1, 4, 4, 2); __PYX_ERR(0, 71, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("part_mesh", 1, 4, 4, 2); __PYX_ERR(0, 76, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_nparts)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("part_mesh", 1, 4, 4, 3); __PYX_ERR(0, 71, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("part_mesh", 1, 4, 4, 3); __PYX_ERR(0, 76, __pyx_L3_error)
         }
       }
       if (kw_args > 0 && likely(kw_args <= 8)) {
@@ -2455,7 +2461,7 @@ static PyObject *__pyx_pw_12pymetis_mesh_8_wrapper_1part_mesh(PyObject *__pyx_se
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "part_mesh") < 0)) __PYX_ERR(0, 71, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "part_mesh") < 0)) __PYX_ERR(0, 76, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -2465,29 +2471,29 @@ static PyObject *__pyx_pw_12pymetis_mesh_8_wrapper_1part_mesh(PyObject *__pyx_se
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
-    __pyx_v_nv = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_nv == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 71, __pyx_L3_error)
-    __pyx_v_eptr = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(values[1]); if (unlikely(!__pyx_v_eptr.memview)) __PYX_ERR(0, 71, __pyx_L3_error)
-    __pyx_v_eind = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(values[2]); if (unlikely(!__pyx_v_eind.memview)) __PYX_ERR(0, 71, __pyx_L3_error)
-    __pyx_v_nparts = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_nparts == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L3_error)
+    __pyx_v_nv = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_nv == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L3_error)
+    __pyx_v_eptr = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(values[1]); if (unlikely(!__pyx_v_eptr.memview)) __PYX_ERR(0, 76, __pyx_L3_error)
+    __pyx_v_eind = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(values[2]); if (unlikely(!__pyx_v_eind.memview)) __PYX_ERR(0, 76, __pyx_L3_error)
+    __pyx_v_nparts = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_nparts == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 77, __pyx_L3_error)
     if (values[4]) {
-      __pyx_v_ncommon = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_ncommon == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L3_error)
+      __pyx_v_ncommon = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_ncommon == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 77, __pyx_L3_error)
     } else {
       __pyx_v_ncommon = ((int)1);
     }
     if (values[5]) {
-      __pyx_v_vwgt = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(values[5]); if (unlikely(!__pyx_v_vwgt.memview)) __PYX_ERR(0, 72, __pyx_L3_error)
+      __pyx_v_vwgt = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(values[5]); if (unlikely(!__pyx_v_vwgt.memview)) __PYX_ERR(0, 77, __pyx_L3_error)
     } else {
       __pyx_v_vwgt = __pyx_k_;
       __PYX_INC_MEMVIEW(&__pyx_v_vwgt, 1);
     }
     if (values[6]) {
-      __pyx_v_vsize = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(values[6]); if (unlikely(!__pyx_v_vsize.memview)) __PYX_ERR(0, 72, __pyx_L3_error)
+      __pyx_v_vsize = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(values[6]); if (unlikely(!__pyx_v_vsize.memview)) __PYX_ERR(0, 77, __pyx_L3_error)
     } else {
       __pyx_v_vsize = __pyx_k__2;
       __PYX_INC_MEMVIEW(&__pyx_v_vsize, 1);
     }
     if (values[7]) {
-      __pyx_v_tpwgts = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_real_t(values[7]); if (unlikely(!__pyx_v_tpwgts.memview)) __PYX_ERR(0, 73, __pyx_L3_error)
+      __pyx_v_tpwgts = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_real_t(values[7]); if (unlikely(!__pyx_v_tpwgts.memview)) __PYX_ERR(0, 78, __pyx_L3_error)
     } else {
       __pyx_v_tpwgts = __pyx_k__3;
       __PYX_INC_MEMVIEW(&__pyx_v_tpwgts, 1);
@@ -2495,13 +2501,13 @@ static PyObject *__pyx_pw_12pymetis_mesh_8_wrapper_1part_mesh(PyObject *__pyx_se
     __pyx_v_one_base = values[8];
     __pyx_v_elemental = values[9];
     if (values[10]) {
-      __pyx_v_epart = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(values[10]); if (unlikely(!__pyx_v_epart.memview)) __PYX_ERR(0, 74, __pyx_L3_error)
+      __pyx_v_epart = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(values[10]); if (unlikely(!__pyx_v_epart.memview)) __PYX_ERR(0, 79, __pyx_L3_error)
     } else {
       __pyx_v_epart = __pyx_k__4;
       __PYX_INC_MEMVIEW(&__pyx_v_epart, 1);
     }
     if (values[11]) {
-      __pyx_v_npart = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(values[11]); if (unlikely(!__pyx_v_npart.memview)) __PYX_ERR(0, 74, __pyx_L3_error)
+      __pyx_v_npart = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(values[11]); if (unlikely(!__pyx_v_npart.memview)) __PYX_ERR(0, 79, __pyx_L3_error)
     } else {
       __pyx_v_npart = __pyx_k__5;
       __PYX_INC_MEMVIEW(&__pyx_v_npart, 1);
@@ -2509,21 +2515,21 @@ static PyObject *__pyx_pw_12pymetis_mesh_8_wrapper_1part_mesh(PyObject *__pyx_se
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("part_mesh", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 71, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("part_mesh", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 76, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pymetis_mesh._wrapper.part_mesh", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(((PyObject *)__pyx_v_eptr.memview) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "eptr"); __PYX_ERR(0, 71, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "eptr"); __PYX_ERR(0, 76, __pyx_L1_error)
   }
   if (unlikely(((PyObject *)__pyx_v_eind.memview) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "eind"); __PYX_ERR(0, 71, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "eind"); __PYX_ERR(0, 76, __pyx_L1_error)
   }
   __pyx_r = __pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(__pyx_self, __pyx_v_nv, __pyx_v_eptr, __pyx_v_eind, __pyx_v_nparts, __pyx_v_ncommon, __pyx_v_vwgt, __pyx_v_vsize, __pyx_v_tpwgts, __pyx_v_one_base, __pyx_v_elemental, __pyx_v_epart, __pyx_v_npart);
 
-  /* "pymetis_mesh/_wrapper.pyx":71
+  /* "pymetis_mesh/_wrapper.pyx":76
  * 
  * 
  * def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,             # <<<<<<<<<<<<<<
@@ -2593,7 +2599,7 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
   __pyx_pybuffernd__npart.data = NULL;
   __pyx_pybuffernd__npart.rcbuffer = &__pyx_pybuffer__npart;
 
-  /* "pymetis_mesh/_wrapper.pyx":77
+  /* "pymetis_mesh/_wrapper.pyx":125
  *     cdef:
  *         # inputs
  *         idx_t _nparts = nparts             # <<<<<<<<<<<<<<
@@ -2602,7 +2608,7 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
  */
   __pyx_v__nparts = __pyx_v_nparts;
 
-  /* "pymetis_mesh/_wrapper.pyx":78
+  /* "pymetis_mesh/_wrapper.pyx":126
  *         # inputs
  *         idx_t _nparts = nparts
  *         idx_t _ncommon = ncommon             # <<<<<<<<<<<<<<
@@ -2611,20 +2617,20 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
  */
   __pyx_v__ncommon = __pyx_v_ncommon;
 
-  /* "pymetis_mesh/_wrapper.pyx":79
+  /* "pymetis_mesh/_wrapper.pyx":127
  *         idx_t _nparts = nparts
  *         idx_t _ncommon = ncommon
  *         idx_t _ne = len(eptr) - 1             # <<<<<<<<<<<<<<
  *         idx_t _nv = nv
  *         idx_t *_vwgt = &vwgt[0] if vwgt is not None else NULL
  */
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_eptr, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_eptr, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 79, __pyx_L1_error)
+  __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__ne = (__pyx_t_2 - 1);
 
-  /* "pymetis_mesh/_wrapper.pyx":80
+  /* "pymetis_mesh/_wrapper.pyx":128
  *         idx_t _ncommon = ncommon
  *         idx_t _ne = len(eptr) - 1
  *         idx_t _nv = nv             # <<<<<<<<<<<<<<
@@ -2633,7 +2639,7 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
  */
   __pyx_v__nv = __pyx_v_nv;
 
-  /* "pymetis_mesh/_wrapper.pyx":81
+  /* "pymetis_mesh/_wrapper.pyx":129
  *         idx_t _ne = len(eptr) - 1
  *         idx_t _nv = nv
  *         idx_t *_vwgt = &vwgt[0] if vwgt is not None else NULL             # <<<<<<<<<<<<<<
@@ -2648,7 +2654,7 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
   }
   __pyx_v__vwgt = __pyx_t_3;
 
-  /* "pymetis_mesh/_wrapper.pyx":82
+  /* "pymetis_mesh/_wrapper.pyx":130
  *         idx_t _nv = nv
  *         idx_t *_vwgt = &vwgt[0] if vwgt is not None else NULL
  *         idx_t *_vsize = &vsize[0] if vsize is not None else NULL             # <<<<<<<<<<<<<<
@@ -2663,7 +2669,7 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
   }
   __pyx_v__vsize = __pyx_t_3;
 
-  /* "pymetis_mesh/_wrapper.pyx":83
+  /* "pymetis_mesh/_wrapper.pyx":131
  *         idx_t *_vwgt = &vwgt[0] if vwgt is not None else NULL
  *         idx_t *_vsize = &vsize[0] if vsize is not None else NULL
  *         real_t *_tpwgts = &tpwgts[0] if tpwgts is not None else NULL             # <<<<<<<<<<<<<<
@@ -2678,27 +2684,27 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
   }
   __pyx_v__tpwgts = __pyx_t_6;
 
-  /* "pymetis_mesh/_wrapper.pyx":90
+  /* "pymetis_mesh/_wrapper.pyx":138
  *         np.ndarray[np.int32_t, ndim=1] _epart
  *         np.ndarray[np.int32_t, ndim=1] _npart
  *     assert _nparts > 0             # <<<<<<<<<<<<<<
- *     assert _vwgt == NULL or len(vwgt) == _ne
- *     assert _vsize == NULL or len(vsize) == _ne
+ *     assert _vwgt == NULL or (len(vwgt) == _ne and elemental) or len(vwgt) == _nv
+ *     assert _vsize == NULL or (len(vsize) == _ne and elemental) or len(vwgt) == _nv
  */
   #ifndef CYTHON_WITHOUT_ASSERTIONS
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!((__pyx_v__nparts > 0) != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 90, __pyx_L1_error)
+      __PYX_ERR(0, 138, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "pymetis_mesh/_wrapper.pyx":91
+  /* "pymetis_mesh/_wrapper.pyx":139
  *         np.ndarray[np.int32_t, ndim=1] _npart
  *     assert _nparts > 0
- *     assert _vwgt == NULL or len(vwgt) == _ne             # <<<<<<<<<<<<<<
- *     assert _vsize == NULL or len(vsize) == _ne
+ *     assert _vwgt == NULL or (len(vwgt) == _ne and elemental) or len(vwgt) == _nv             # <<<<<<<<<<<<<<
+ *     assert _vsize == NULL or (len(vsize) == _ne and elemental) or len(vwgt) == _nv
  *     assert _tpwgts == NULL or len(tpwgts) == _nparts
  */
   #ifndef CYTHON_WITHOUT_ASSERTIONS
@@ -2709,24 +2715,40 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
       __pyx_t_8 = __pyx_t_9;
       goto __pyx_L3_bool_binop_done;
     }
-    __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_vwgt, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_vwgt, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 139, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_9 = ((__pyx_t_2 == __pyx_v__ne) != 0);
+    if (!__pyx_t_9) {
+      goto __pyx_L5_next_or;
+    } else {
+    }
+    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_v_elemental); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 139, __pyx_L1_error)
+    if (!__pyx_t_9) {
+    } else {
+      __pyx_t_8 = __pyx_t_9;
+      goto __pyx_L3_bool_binop_done;
+    }
+    __pyx_L5_next_or:;
+    __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_vwgt, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 139, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_9 = ((__pyx_t_2 == __pyx_v__nv) != 0);
     __pyx_t_8 = __pyx_t_9;
     __pyx_L3_bool_binop_done:;
     if (unlikely(!__pyx_t_8)) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 91, __pyx_L1_error)
+      __PYX_ERR(0, 139, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "pymetis_mesh/_wrapper.pyx":92
+  /* "pymetis_mesh/_wrapper.pyx":140
  *     assert _nparts > 0
- *     assert _vwgt == NULL or len(vwgt) == _ne
- *     assert _vsize == NULL or len(vsize) == _ne             # <<<<<<<<<<<<<<
+ *     assert _vwgt == NULL or (len(vwgt) == _ne and elemental) or len(vwgt) == _nv
+ *     assert _vsize == NULL or (len(vsize) == _ne and elemental) or len(vwgt) == _nv             # <<<<<<<<<<<<<<
  *     assert _tpwgts == NULL or len(tpwgts) == _nparts
  *     if epart is None:
  */
@@ -2736,25 +2758,41 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
     if (!__pyx_t_9) {
     } else {
       __pyx_t_8 = __pyx_t_9;
-      goto __pyx_L5_bool_binop_done;
+      goto __pyx_L7_bool_binop_done;
     }
-    __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_vsize, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_vsize, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 140, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_9 = ((__pyx_t_2 == __pyx_v__ne) != 0);
+    if (!__pyx_t_9) {
+      goto __pyx_L9_next_or;
+    } else {
+    }
+    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_v_elemental); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 140, __pyx_L1_error)
+    if (!__pyx_t_9) {
+    } else {
+      __pyx_t_8 = __pyx_t_9;
+      goto __pyx_L7_bool_binop_done;
+    }
+    __pyx_L9_next_or:;
+    __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_vwgt, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_9 = ((__pyx_t_2 == __pyx_v__nv) != 0);
     __pyx_t_8 = __pyx_t_9;
-    __pyx_L5_bool_binop_done:;
+    __pyx_L7_bool_binop_done:;
     if (unlikely(!__pyx_t_8)) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 92, __pyx_L1_error)
+      __PYX_ERR(0, 140, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "pymetis_mesh/_wrapper.pyx":93
- *     assert _vwgt == NULL or len(vwgt) == _ne
- *     assert _vsize == NULL or len(vsize) == _ne
+  /* "pymetis_mesh/_wrapper.pyx":141
+ *     assert _vwgt == NULL or (len(vwgt) == _ne and elemental) or len(vwgt) == _nv
+ *     assert _vsize == NULL or (len(vsize) == _ne and elemental) or len(vwgt) == _nv
  *     assert _tpwgts == NULL or len(tpwgts) == _nparts             # <<<<<<<<<<<<<<
  *     if epart is None:
  *         _epart = np.empty(_ne, dtype=np.int32)
@@ -2765,24 +2803,24 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
     if (!__pyx_t_9) {
     } else {
       __pyx_t_8 = __pyx_t_9;
-      goto __pyx_L7_bool_binop_done;
+      goto __pyx_L11_bool_binop_done;
     }
-    __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_tpwgts, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_real_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_real_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_tpwgts, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_real_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_real_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 141, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_9 = ((__pyx_t_2 == __pyx_v__nparts) != 0);
     __pyx_t_8 = __pyx_t_9;
-    __pyx_L7_bool_binop_done:;
+    __pyx_L11_bool_binop_done:;
     if (unlikely(!__pyx_t_8)) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 93, __pyx_L1_error)
+      __PYX_ERR(0, 141, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "pymetis_mesh/_wrapper.pyx":94
- *     assert _vsize == NULL or len(vsize) == _ne
+  /* "pymetis_mesh/_wrapper.pyx":142
+ *     assert _vsize == NULL or (len(vsize) == _ne and elemental) or len(vwgt) == _nv
  *     assert _tpwgts == NULL or len(tpwgts) == _nparts
  *     if epart is None:             # <<<<<<<<<<<<<<
  *         _epart = np.empty(_ne, dtype=np.int32)
@@ -2791,40 +2829,40 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
   __pyx_t_8 = ((((PyObject *) __pyx_v_epart.memview) == Py_None) != 0);
   if (__pyx_t_8) {
 
-    /* "pymetis_mesh/_wrapper.pyx":95
+    /* "pymetis_mesh/_wrapper.pyx":143
  *     assert _tpwgts == NULL or len(tpwgts) == _nparts
  *     if epart is None:
  *         _epart = np.empty(_ne, dtype=np.int32)             # <<<<<<<<<<<<<<
  *     else:
  *         assert len(epart) == _ne
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyInt_From_idx_t(__pyx_v__ne); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_idx_t(__pyx_v__ne); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_12 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_12 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_int32); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_int32); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_13) < 0) __PYX_ERR(0, 95, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_13) < 0) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_11, __pyx_t_1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_11, __pyx_t_1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 143, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (!(likely(((__pyx_t_13) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_13, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 95, __pyx_L1_error)
+    if (!(likely(((__pyx_t_13) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_13, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 143, __pyx_L1_error)
     __pyx_t_14 = ((PyArrayObject *)__pyx_t_13);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -2840,23 +2878,23 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
         }
       }
       __pyx_pybuffernd__epart.diminfo[0].strides = __pyx_pybuffernd__epart.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd__epart.diminfo[0].shape = __pyx_pybuffernd__epart.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 95, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 143, __pyx_L1_error)
     }
     __pyx_t_14 = 0;
     __pyx_v__epart = ((PyArrayObject *)__pyx_t_13);
     __pyx_t_13 = 0;
 
-    /* "pymetis_mesh/_wrapper.pyx":94
- *     assert _vsize == NULL or len(vsize) == _ne
+    /* "pymetis_mesh/_wrapper.pyx":142
+ *     assert _vsize == NULL or (len(vsize) == _ne and elemental) or len(vwgt) == _nv
  *     assert _tpwgts == NULL or len(tpwgts) == _nparts
  *     if epart is None:             # <<<<<<<<<<<<<<
  *         _epart = np.empty(_ne, dtype=np.int32)
  *     else:
  */
-    goto __pyx_L9;
+    goto __pyx_L13;
   }
 
-  /* "pymetis_mesh/_wrapper.pyx":97
+  /* "pymetis_mesh/_wrapper.pyx":145
  *         _epart = np.empty(_ne, dtype=np.int32)
  *     else:
  *         assert len(epart) == _ne             # <<<<<<<<<<<<<<
@@ -2866,30 +2904,30 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
   /*else*/ {
     #ifndef CYTHON_WITHOUT_ASSERTIONS
     if (unlikely(!Py_OptimizeFlag)) {
-      __pyx_t_13 = __pyx_memoryview_fromslice(__pyx_v_epart, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 97, __pyx_L1_error)
+      __pyx_t_13 = __pyx_memoryview_fromslice(__pyx_v_epart, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 145, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
-      __pyx_t_2 = PyObject_Length(__pyx_t_13); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 97, __pyx_L1_error)
+      __pyx_t_2 = PyObject_Length(__pyx_t_13); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 145, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       if (unlikely(!((__pyx_t_2 == __pyx_v__ne) != 0))) {
         PyErr_SetNone(PyExc_AssertionError);
-        __PYX_ERR(0, 97, __pyx_L1_error)
+        __PYX_ERR(0, 145, __pyx_L1_error)
       }
     }
     #endif
 
-    /* "pymetis_mesh/_wrapper.pyx":98
+    /* "pymetis_mesh/_wrapper.pyx":146
  *     else:
  *         assert len(epart) == _ne
  *         _epart = np.asarray(epart)             # <<<<<<<<<<<<<<
  *     if npart is None:
  *         _npart = np.empty(_nv, dtype=np.int32)
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 146, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_epart, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_epart, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_10 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
@@ -2902,14 +2940,14 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
       }
     }
     if (!__pyx_t_10) {
-      __pyx_t_13 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 98, __pyx_L1_error)
+      __pyx_t_13 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 146, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_GOTREF(__pyx_t_13);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_11)) {
         PyObject *__pyx_temp[2] = {__pyx_t_10, __pyx_t_1};
-        __pyx_t_13 = __Pyx_PyFunction_FastCall(__pyx_t_11, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 98, __pyx_L1_error)
+        __pyx_t_13 = __Pyx_PyFunction_FastCall(__pyx_t_11, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 146, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
         __Pyx_GOTREF(__pyx_t_13);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2918,26 +2956,26 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_11)) {
         PyObject *__pyx_temp[2] = {__pyx_t_10, __pyx_t_1};
-        __pyx_t_13 = __Pyx_PyCFunction_FastCall(__pyx_t_11, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 98, __pyx_L1_error)
+        __pyx_t_13 = __Pyx_PyCFunction_FastCall(__pyx_t_11, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 146, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
         __Pyx_GOTREF(__pyx_t_13);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       } else
       #endif
       {
-        __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 98, __pyx_L1_error)
+        __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 146, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
         __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_10); __pyx_t_10 = NULL;
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_t_1);
         __pyx_t_1 = 0;
-        __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_12, NULL); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 98, __pyx_L1_error)
+        __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_12, NULL); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 146, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_13);
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    if (!(likely(((__pyx_t_13) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_13, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 98, __pyx_L1_error)
+    if (!(likely(((__pyx_t_13) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_13, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 146, __pyx_L1_error)
     __pyx_t_14 = ((PyArrayObject *)__pyx_t_13);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -2953,15 +2991,15 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
         }
       }
       __pyx_pybuffernd__epart.diminfo[0].strides = __pyx_pybuffernd__epart.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd__epart.diminfo[0].shape = __pyx_pybuffernd__epart.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 98, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 146, __pyx_L1_error)
     }
     __pyx_t_14 = 0;
     __pyx_v__epart = ((PyArrayObject *)__pyx_t_13);
     __pyx_t_13 = 0;
   }
-  __pyx_L9:;
+  __pyx_L13:;
 
-  /* "pymetis_mesh/_wrapper.pyx":99
+  /* "pymetis_mesh/_wrapper.pyx":147
  *         assert len(epart) == _ne
  *         _epart = np.asarray(epart)
  *     if npart is None:             # <<<<<<<<<<<<<<
@@ -2971,40 +3009,40 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
   __pyx_t_8 = ((((PyObject *) __pyx_v_npart.memview) == Py_None) != 0);
   if (__pyx_t_8) {
 
-    /* "pymetis_mesh/_wrapper.pyx":100
+    /* "pymetis_mesh/_wrapper.pyx":148
  *         _epart = np.asarray(epart)
  *     if npart is None:
  *         _npart = np.empty(_nv, dtype=np.int32)             # <<<<<<<<<<<<<<
  *     else:
  *         assert len(npart) == _nv
  */
-    __pyx_t_13 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 148, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
-    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_empty); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_empty); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 148, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __pyx_t_13 = __Pyx_PyInt_From_idx_t(__pyx_v__nv); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyInt_From_idx_t(__pyx_v__nv); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 148, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
-    __pyx_t_12 = PyTuple_New(1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_12 = PyTuple_New(1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 148, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_GIVEREF(__pyx_t_13);
     PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_13);
     __pyx_t_13 = 0;
-    __pyx_t_13 = PyDict_New(); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_13 = PyDict_New(); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 148, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_int32); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_int32); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 148, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (PyDict_SetItem(__pyx_t_13, __pyx_n_s_dtype, __pyx_t_10) < 0) __PYX_ERR(0, 100, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_13, __pyx_n_s_dtype, __pyx_t_10) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_12, __pyx_t_13); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_12, __pyx_t_13); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 148, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-    if (!(likely(((__pyx_t_10) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_10, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 100, __pyx_L1_error)
+    if (!(likely(((__pyx_t_10) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_10, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 148, __pyx_L1_error)
     __pyx_t_19 = ((PyArrayObject *)__pyx_t_10);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -3020,23 +3058,23 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
         }
       }
       __pyx_pybuffernd__npart.diminfo[0].strides = __pyx_pybuffernd__npart.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd__npart.diminfo[0].shape = __pyx_pybuffernd__npart.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 100, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 148, __pyx_L1_error)
     }
     __pyx_t_19 = 0;
     __pyx_v__npart = ((PyArrayObject *)__pyx_t_10);
     __pyx_t_10 = 0;
 
-    /* "pymetis_mesh/_wrapper.pyx":99
+    /* "pymetis_mesh/_wrapper.pyx":147
  *         assert len(epart) == _ne
  *         _epart = np.asarray(epart)
  *     if npart is None:             # <<<<<<<<<<<<<<
  *         _npart = np.empty(_nv, dtype=np.int32)
  *     else:
  */
-    goto __pyx_L10;
+    goto __pyx_L14;
   }
 
-  /* "pymetis_mesh/_wrapper.pyx":102
+  /* "pymetis_mesh/_wrapper.pyx":150
  *         _npart = np.empty(_nv, dtype=np.int32)
  *     else:
  *         assert len(npart) == _nv             # <<<<<<<<<<<<<<
@@ -3046,30 +3084,30 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
   /*else*/ {
     #ifndef CYTHON_WITHOUT_ASSERTIONS
     if (unlikely(!Py_OptimizeFlag)) {
-      __pyx_t_10 = __pyx_memoryview_fromslice(__pyx_v_npart, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 102, __pyx_L1_error)
+      __pyx_t_10 = __pyx_memoryview_fromslice(__pyx_v_npart, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 150, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
-      __pyx_t_2 = PyObject_Length(__pyx_t_10); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 102, __pyx_L1_error)
+      __pyx_t_2 = PyObject_Length(__pyx_t_10); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 150, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       if (unlikely(!((__pyx_t_2 == __pyx_v__nv) != 0))) {
         PyErr_SetNone(PyExc_AssertionError);
-        __PYX_ERR(0, 102, __pyx_L1_error)
+        __PYX_ERR(0, 150, __pyx_L1_error)
       }
     }
     #endif
 
-    /* "pymetis_mesh/_wrapper.pyx":103
+    /* "pymetis_mesh/_wrapper.pyx":151
  *     else:
  *         assert len(npart) == _nv
  *         _npart = np.asarray(npart)             # <<<<<<<<<<<<<<
  *     # set default options
  *     METIS_SetDefaultOptions(opts)
  */
-    __pyx_t_13 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 151, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
-    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_asarray); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_asarray); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 151, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __pyx_t_13 = __pyx_memoryview_fromslice(__pyx_v_npart, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_13 = __pyx_memoryview_fromslice(__pyx_v_npart, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_idx_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_idx_t, 0);; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 151, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     __pyx_t_11 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_12))) {
@@ -3082,14 +3120,14 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
       }
     }
     if (!__pyx_t_11) {
-      __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_13); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 103, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_13); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 151, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       __Pyx_GOTREF(__pyx_t_10);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_12)) {
         PyObject *__pyx_temp[2] = {__pyx_t_11, __pyx_t_13};
-        __pyx_t_10 = __Pyx_PyFunction_FastCall(__pyx_t_12, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 103, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyFunction_FastCall(__pyx_t_12, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 151, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
@@ -3098,26 +3136,26 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_12)) {
         PyObject *__pyx_temp[2] = {__pyx_t_11, __pyx_t_13};
-        __pyx_t_10 = __Pyx_PyCFunction_FastCall(__pyx_t_12, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 103, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyCFunction_FastCall(__pyx_t_12, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 151, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       } else
       #endif
       {
-        __pyx_t_1 = PyTuple_New(1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_New(1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_11); __pyx_t_11 = NULL;
         __Pyx_GIVEREF(__pyx_t_13);
         PyTuple_SET_ITEM(__pyx_t_1, 0+1, __pyx_t_13);
         __pyx_t_13 = 0;
-        __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_1, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 103, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_1, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 151, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (!(likely(((__pyx_t_10) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_10, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 103, __pyx_L1_error)
+    if (!(likely(((__pyx_t_10) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_10, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 151, __pyx_L1_error)
     __pyx_t_19 = ((PyArrayObject *)__pyx_t_10);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -3133,15 +3171,15 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
         }
       }
       __pyx_pybuffernd__npart.diminfo[0].strides = __pyx_pybuffernd__npart.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd__npart.diminfo[0].shape = __pyx_pybuffernd__npart.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 103, __pyx_L1_error)
+      if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 151, __pyx_L1_error)
     }
     __pyx_t_19 = 0;
     __pyx_v__npart = ((PyArrayObject *)__pyx_t_10);
     __pyx_t_10 = 0;
   }
-  __pyx_L10:;
+  __pyx_L14:;
 
-  /* "pymetis_mesh/_wrapper.pyx":105
+  /* "pymetis_mesh/_wrapper.pyx":153
  *         _npart = np.asarray(npart)
  *     # set default options
  *     METIS_SetDefaultOptions(opts)             # <<<<<<<<<<<<<<
@@ -3150,14 +3188,14 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
  */
   METIS_SetDefaultOptions(__pyx_v_opts);
 
-  /* "pymetis_mesh/_wrapper.pyx":106
+  /* "pymetis_mesh/_wrapper.pyx":154
  *     # set default options
  *     METIS_SetDefaultOptions(opts)
  *     opts[nmbr] = 1 if one_base else 0             # <<<<<<<<<<<<<<
  *     if elemental:
  *         ret = METIS_PartMeshDual(&_ne, &_nv, <idx_t *> &eptr[0],
  */
-  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_one_base); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_one_base); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 154, __pyx_L1_error)
   if (__pyx_t_8) {
     __pyx_t_20 = 1;
   } else {
@@ -3165,17 +3203,17 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
   }
   (__pyx_v_opts[METIS_OPTION_NUMBERING]) = __pyx_t_20;
 
-  /* "pymetis_mesh/_wrapper.pyx":107
+  /* "pymetis_mesh/_wrapper.pyx":155
  *     METIS_SetDefaultOptions(opts)
  *     opts[nmbr] = 1 if one_base else 0
  *     if elemental:             # <<<<<<<<<<<<<<
  *         ret = METIS_PartMeshDual(&_ne, &_nv, <idx_t *> &eptr[0],
  *             <idx_t *> &eind[0], _vwgt, _vsize, &_ncommon, &_nparts, _tpwgts,
  */
-  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_elemental); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_elemental); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 155, __pyx_L1_error)
   if (__pyx_t_8) {
 
-    /* "pymetis_mesh/_wrapper.pyx":108
+    /* "pymetis_mesh/_wrapper.pyx":156
  *     opts[nmbr] = 1 if one_base else 0
  *     if elemental:
  *         ret = METIS_PartMeshDual(&_ne, &_nv, <idx_t *> &eptr[0],             # <<<<<<<<<<<<<<
@@ -3184,7 +3222,7 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
  */
     __pyx_t_21 = 0;
 
-    /* "pymetis_mesh/_wrapper.pyx":109
+    /* "pymetis_mesh/_wrapper.pyx":157
  *     if elemental:
  *         ret = METIS_PartMeshDual(&_ne, &_nv, <idx_t *> &eptr[0],
  *             <idx_t *> &eind[0], _vwgt, _vsize, &_ncommon, &_nparts, _tpwgts,             # <<<<<<<<<<<<<<
@@ -3193,7 +3231,7 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
  */
     __pyx_t_22 = 0;
 
-    /* "pymetis_mesh/_wrapper.pyx":108
+    /* "pymetis_mesh/_wrapper.pyx":156
  *     opts[nmbr] = 1 if one_base else 0
  *     if elemental:
  *         ret = METIS_PartMeshDual(&_ne, &_nv, <idx_t *> &eptr[0],             # <<<<<<<<<<<<<<
@@ -3202,17 +3240,17 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
  */
     __pyx_v_ret = METIS_PartMeshDual((&__pyx_v__ne), (&__pyx_v__nv), ((idx_t *)(&(*((idx_t *) ( /* dim=0 */ ((char *) (((idx_t *) __pyx_v_eptr.data) + __pyx_t_21)) ))))), ((idx_t *)(&(*((idx_t *) ( /* dim=0 */ ((char *) (((idx_t *) __pyx_v_eind.data) + __pyx_t_22)) ))))), __pyx_v__vwgt, __pyx_v__vsize, (&__pyx_v__ncommon), (&__pyx_v__nparts), __pyx_v__tpwgts, __pyx_v_opts, (&__pyx_v_objval), ((idx_t *)__pyx_v__epart->data), ((idx_t *)__pyx_v__npart->data));
 
-    /* "pymetis_mesh/_wrapper.pyx":107
+    /* "pymetis_mesh/_wrapper.pyx":155
  *     METIS_SetDefaultOptions(opts)
  *     opts[nmbr] = 1 if one_base else 0
  *     if elemental:             # <<<<<<<<<<<<<<
  *         ret = METIS_PartMeshDual(&_ne, &_nv, <idx_t *> &eptr[0],
  *             <idx_t *> &eind[0], _vwgt, _vsize, &_ncommon, &_nparts, _tpwgts,
  */
-    goto __pyx_L11;
+    goto __pyx_L15;
   }
 
-  /* "pymetis_mesh/_wrapper.pyx":112
+  /* "pymetis_mesh/_wrapper.pyx":160
  *             opts, &objval, <idx_t *> _epart.data, <idx_t *> _npart.data)
  *     else:
  *         ret = METIS_PartMeshNodal(&_ne, &_nv, <idx_t *> &eptr[0],             # <<<<<<<<<<<<<<
@@ -3222,7 +3260,7 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
   /*else*/ {
     __pyx_t_23 = 0;
 
-    /* "pymetis_mesh/_wrapper.pyx":113
+    /* "pymetis_mesh/_wrapper.pyx":161
  *     else:
  *         ret = METIS_PartMeshNodal(&_ne, &_nv, <idx_t *> &eptr[0],
  *             <idx_t *> &eind[0], _vwgt, _vsize, &_nparts, _tpwgts, opts, &objval,             # <<<<<<<<<<<<<<
@@ -3231,7 +3269,7 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
  */
     __pyx_t_24 = 0;
 
-    /* "pymetis_mesh/_wrapper.pyx":112
+    /* "pymetis_mesh/_wrapper.pyx":160
  *             opts, &objval, <idx_t *> _epart.data, <idx_t *> _npart.data)
  *     else:
  *         ret = METIS_PartMeshNodal(&_ne, &_nv, <idx_t *> &eptr[0],             # <<<<<<<<<<<<<<
@@ -3240,55 +3278,50 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
  */
     __pyx_v_ret = METIS_PartMeshNodal((&__pyx_v__ne), (&__pyx_v__nv), ((idx_t *)(&(*((idx_t *) ( /* dim=0 */ ((char *) (((idx_t *) __pyx_v_eptr.data) + __pyx_t_23)) ))))), ((idx_t *)(&(*((idx_t *) ( /* dim=0 */ ((char *) (((idx_t *) __pyx_v_eind.data) + __pyx_t_24)) ))))), __pyx_v__vwgt, __pyx_v__vsize, (&__pyx_v__nparts), __pyx_v__tpwgts, __pyx_v_opts, (&__pyx_v_objval), ((idx_t *)__pyx_v__epart->data), ((idx_t *)__pyx_v__npart->data));
   }
-  __pyx_L11:;
+  __pyx_L15:;
 
-  /* "pymetis_mesh/_wrapper.pyx":115
+  /* "pymetis_mesh/_wrapper.pyx":163
  *             <idx_t *> &eind[0], _vwgt, _vsize, &_nparts, _tpwgts, opts, &objval,
  *             <idx_t *> _epart.data, <idx_t *> _npart.data)
  *     if ret == 1:             # <<<<<<<<<<<<<<
- *         return (objval, _epart, _npart)
+ *         return {'cuts': objval, 'epart': _epart, 'npart': _npart}
  *     elif ret == err_in:
  */
   __pyx_t_8 = ((__pyx_v_ret == 1) != 0);
   if (__pyx_t_8) {
 
-    /* "pymetis_mesh/_wrapper.pyx":116
+    /* "pymetis_mesh/_wrapper.pyx":164
  *             <idx_t *> _epart.data, <idx_t *> _npart.data)
  *     if ret == 1:
- *         return (objval, _epart, _npart)             # <<<<<<<<<<<<<<
+ *         return {'cuts': objval, 'epart': _epart, 'npart': _npart}             # <<<<<<<<<<<<<<
  *     elif ret == err_in:
  *         raise MetisInputError('invalid input arguments')
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_10 = __Pyx_PyInt_From_idx_t(__pyx_v_objval); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_10 = PyDict_New(); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_12 = PyTuple_New(3); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __pyx_t_12 = __Pyx_PyInt_From_idx_t(__pyx_v_objval); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_GIVEREF(__pyx_t_10);
-    PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_10);
-    __Pyx_INCREF(((PyObject *)__pyx_v__epart));
-    __Pyx_GIVEREF(((PyObject *)__pyx_v__epart));
-    PyTuple_SET_ITEM(__pyx_t_12, 1, ((PyObject *)__pyx_v__epart));
-    __Pyx_INCREF(((PyObject *)__pyx_v__npart));
-    __Pyx_GIVEREF(((PyObject *)__pyx_v__npart));
-    PyTuple_SET_ITEM(__pyx_t_12, 2, ((PyObject *)__pyx_v__npart));
+    if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_cuts, __pyx_t_12) < 0) __PYX_ERR(0, 164, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_epart, ((PyObject *)__pyx_v__epart)) < 0) __PYX_ERR(0, 164, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_npart, ((PyObject *)__pyx_v__npart)) < 0) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_r = __pyx_t_10;
     __pyx_t_10 = 0;
-    __pyx_r = __pyx_t_12;
-    __pyx_t_12 = 0;
     goto __pyx_L0;
 
-    /* "pymetis_mesh/_wrapper.pyx":115
+    /* "pymetis_mesh/_wrapper.pyx":163
  *             <idx_t *> &eind[0], _vwgt, _vsize, &_nparts, _tpwgts, opts, &objval,
  *             <idx_t *> _epart.data, <idx_t *> _npart.data)
  *     if ret == 1:             # <<<<<<<<<<<<<<
- *         return (objval, _epart, _npart)
+ *         return {'cuts': objval, 'epart': _epart, 'npart': _npart}
  *     elif ret == err_in:
  */
   }
 
-  /* "pymetis_mesh/_wrapper.pyx":117
+  /* "pymetis_mesh/_wrapper.pyx":165
  *     if ret == 1:
- *         return (objval, _epart, _npart)
+ *         return {'cuts': objval, 'epart': _epart, 'npart': _npart}
  *     elif ret == err_in:             # <<<<<<<<<<<<<<
  *         raise MetisInputError('invalid input arguments')
  *     elif ret == err_mem:
@@ -3296,32 +3329,32 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
   __pyx_t_8 = ((__pyx_v_ret == METIS_ERROR_INPUT) != 0);
   if (__pyx_t_8) {
 
-    /* "pymetis_mesh/_wrapper.pyx":118
- *         return (objval, _epart, _npart)
+    /* "pymetis_mesh/_wrapper.pyx":166
+ *         return {'cuts': objval, 'epart': _epart, 'npart': _npart}
  *     elif ret == err_in:
  *         raise MetisInputError('invalid input arguments')             # <<<<<<<<<<<<<<
  *     elif ret == err_mem:
  *         raise MetisMemoryError('bad alloc')
  */
-    __pyx_t_12 = __Pyx_GetModuleGlobalName(__pyx_n_s_MetisInputError); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 118, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 118, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_MetisInputError); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 166, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __Pyx_Raise(__pyx_t_10, 0, 0, 0);
+    __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __PYX_ERR(0, 118, __pyx_L1_error)
+    __Pyx_Raise(__pyx_t_12, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __PYX_ERR(0, 166, __pyx_L1_error)
 
-    /* "pymetis_mesh/_wrapper.pyx":117
+    /* "pymetis_mesh/_wrapper.pyx":165
  *     if ret == 1:
- *         return (objval, _epart, _npart)
+ *         return {'cuts': objval, 'epart': _epart, 'npart': _npart}
  *     elif ret == err_in:             # <<<<<<<<<<<<<<
  *         raise MetisInputError('invalid input arguments')
  *     elif ret == err_mem:
  */
   }
 
-  /* "pymetis_mesh/_wrapper.pyx":119
+  /* "pymetis_mesh/_wrapper.pyx":167
  *     elif ret == err_in:
  *         raise MetisInputError('invalid input arguments')
  *     elif ret == err_mem:             # <<<<<<<<<<<<<<
@@ -3331,23 +3364,23 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
   __pyx_t_8 = ((__pyx_v_ret == METIS_ERROR_MEMORY) != 0);
   if (__pyx_t_8) {
 
-    /* "pymetis_mesh/_wrapper.pyx":120
+    /* "pymetis_mesh/_wrapper.pyx":168
  *         raise MetisInputError('invalid input arguments')
  *     elif ret == err_mem:
  *         raise MetisMemoryError('bad alloc')             # <<<<<<<<<<<<<<
  *     else:
  *         raise MetisError('routine didn\'t return METIS_OK')
  */
-    __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_MetisMemoryError); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 120, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 120, __pyx_L1_error)
+    __pyx_t_12 = __Pyx_GetModuleGlobalName(__pyx_n_s_MetisMemoryError); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 168, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __Pyx_Raise(__pyx_t_12, 0, 0, 0);
+    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 168, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __PYX_ERR(0, 120, __pyx_L1_error)
+    __Pyx_Raise(__pyx_t_10, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    __PYX_ERR(0, 168, __pyx_L1_error)
 
-    /* "pymetis_mesh/_wrapper.pyx":119
+    /* "pymetis_mesh/_wrapper.pyx":167
  *     elif ret == err_in:
  *         raise MetisInputError('invalid input arguments')
  *     elif ret == err_mem:             # <<<<<<<<<<<<<<
@@ -3356,23 +3389,23 @@ static PyObject *__pyx_pf_12pymetis_mesh_8_wrapper_part_mesh(CYTHON_UNUSED PyObj
  */
   }
 
-  /* "pymetis_mesh/_wrapper.pyx":122
+  /* "pymetis_mesh/_wrapper.pyx":170
  *         raise MetisMemoryError('bad alloc')
  *     else:
  *         raise MetisError('routine didn\'t return METIS_OK')             # <<<<<<<<<<<<<<
  */
   /*else*/ {
-    __pyx_t_12 = __Pyx_GetModuleGlobalName(__pyx_n_s_MetisError); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 122, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 122, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_MetisError); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 170, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
-    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __Pyx_Raise(__pyx_t_10, 0, 0, 0);
+    __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 170, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __PYX_ERR(0, 122, __pyx_L1_error)
+    __Pyx_Raise(__pyx_t_12, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __PYX_ERR(0, 170, __pyx_L1_error)
   }
 
-  /* "pymetis_mesh/_wrapper.pyx":71
+  /* "pymetis_mesh/_wrapper.pyx":76
  * 
  * 
  * def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,             # <<<<<<<<<<<<<<
@@ -19461,6 +19494,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_PickleError, __pyx_k_PickleError, sizeof(__pyx_k_PickleError), 0, 0, 1, 1},
   {&__pyx_kp_s_Qiao_Chen, __pyx_k_Qiao_Chen, sizeof(__pyx_k_Qiao_Chen), 0, 0, 1, 0},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
+  {&__pyx_kp_u_The_main_partition_interface_Par, __pyx_k_The_main_partition_interface_Par, sizeof(__pyx_k_The_main_partition_interface_Par), 0, 1, 0, 0},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_kp_s_Unable_to_convert_item_to_object, __pyx_k_Unable_to_convert_item_to_object, sizeof(__pyx_k_Unable_to_convert_item_to_object), 0, 0, 1, 0},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
@@ -19477,6 +19511,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_contiguous_and_direct, __pyx_k_contiguous_and_direct, sizeof(__pyx_k_contiguous_and_direct), 0, 0, 1, 0},
   {&__pyx_kp_s_contiguous_and_indirect, __pyx_k_contiguous_and_indirect, sizeof(__pyx_k_contiguous_and_indirect), 0, 0, 1, 0},
   {&__pyx_n_s_copyright, __pyx_k_copyright, sizeof(__pyx_k_copyright), 0, 0, 1, 1},
+  {&__pyx_n_s_cuts, __pyx_k_cuts, sizeof(__pyx_k_cuts), 0, 0, 1, 1},
   {&__pyx_n_s_dict, __pyx_k_dict, sizeof(__pyx_k_dict), 0, 0, 1, 1},
   {&__pyx_n_s_doc, __pyx_k_doc, sizeof(__pyx_k_doc), 0, 0, 1, 1},
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
@@ -19533,6 +19568,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_opts, __pyx_k_opts, sizeof(__pyx_k_opts), 0, 0, 1, 1},
   {&__pyx_n_s_pack, __pyx_k_pack, sizeof(__pyx_k_pack), 0, 0, 1, 1},
   {&__pyx_n_s_part_mesh, __pyx_k_part_mesh, sizeof(__pyx_k_part_mesh), 0, 0, 1, 1},
+  {&__pyx_kp_u_part_mesh_line_76, __pyx_k_part_mesh_line_76, sizeof(__pyx_k_part_mesh_line_76), 0, 1, 0, 0},
   {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
   {&__pyx_n_s_prepare, __pyx_k_prepare, sizeof(__pyx_k_prepare), 0, 0, 1, 1},
   {&__pyx_n_s_pymetis_mesh__wrapper, __pyx_k_pymetis_mesh__wrapper, sizeof(__pyx_k_pymetis_mesh__wrapper), 0, 0, 1, 1},
@@ -19581,9 +19617,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_AttributeError = __Pyx_GetBuiltinName(__pyx_n_s_AttributeError); if (!__pyx_builtin_AttributeError) __PYX_ERR(0, 59, __pyx_L1_error)
-  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 63, __pyx_L1_error)
-  __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_builtin_AttributeError = __Pyx_GetBuiltinName(__pyx_n_s_AttributeError); if (!__pyx_builtin_AttributeError) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(0, 72, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 218, __pyx_L1_error)
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(1, 231, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 989, __pyx_L1_error)
@@ -19601,34 +19637,34 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "pymetis_mesh/_wrapper.pyx":118
- *         return (objval, _epart, _npart)
+  /* "pymetis_mesh/_wrapper.pyx":166
+ *         return {'cuts': objval, 'epart': _epart, 'npart': _npart}
  *     elif ret == err_in:
  *         raise MetisInputError('invalid input arguments')             # <<<<<<<<<<<<<<
  *     elif ret == err_mem:
  *         raise MetisMemoryError('bad alloc')
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_invalid_input_arguments); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_invalid_input_arguments); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "pymetis_mesh/_wrapper.pyx":120
+  /* "pymetis_mesh/_wrapper.pyx":168
  *         raise MetisInputError('invalid input arguments')
  *     elif ret == err_mem:
  *         raise MetisMemoryError('bad alloc')             # <<<<<<<<<<<<<<
  *     else:
  *         raise MetisError('routine didn\'t return METIS_OK')
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_s_bad_alloc); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_s_bad_alloc); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 168, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "pymetis_mesh/_wrapper.pyx":122
+  /* "pymetis_mesh/_wrapper.pyx":170
  *         raise MetisMemoryError('bad alloc')
  *     else:
  *         raise MetisError('routine didn\'t return METIS_OK')             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_s_routine_didn_t_return_METIS_OK); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_s_routine_didn_t_return_METIS_OK); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
@@ -19932,17 +19968,17 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__36);
   __Pyx_GIVEREF(__pyx_tuple__36);
 
-  /* "pymetis_mesh/_wrapper.pyx":71
+  /* "pymetis_mesh/_wrapper.pyx":76
  * 
  * 
  * def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,             # <<<<<<<<<<<<<<
  *     int nparts, *, int ncommon=1, idx_t[::1] vwgt=None, idx_t[::1] vsize=None,
  *     real_t[::1] tpwgts=None, one_base=False, elemental=True,
  */
-  __pyx_tuple__37 = PyTuple_Pack(24, __pyx_n_s_nv, __pyx_n_s_eptr, __pyx_n_s_eind, __pyx_n_s_nparts, __pyx_n_s_ncommon, __pyx_n_s_vwgt, __pyx_n_s_vsize, __pyx_n_s_tpwgts, __pyx_n_s_one_base, __pyx_n_s_elemental, __pyx_n_s_epart, __pyx_n_s_npart, __pyx_n_s_nparts_2, __pyx_n_s_ncommon_2, __pyx_n_s_ne, __pyx_n_s_nv_2, __pyx_n_s_vwgt_2, __pyx_n_s_vsize_2, __pyx_n_s_tpwgts_2, __pyx_n_s_opts, __pyx_n_s_ret, __pyx_n_s_objval, __pyx_n_s_epart_2, __pyx_n_s_npart_2); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_tuple__37 = PyTuple_Pack(24, __pyx_n_s_nv, __pyx_n_s_eptr, __pyx_n_s_eind, __pyx_n_s_nparts, __pyx_n_s_ncommon, __pyx_n_s_vwgt, __pyx_n_s_vsize, __pyx_n_s_tpwgts, __pyx_n_s_one_base, __pyx_n_s_elemental, __pyx_n_s_epart, __pyx_n_s_npart, __pyx_n_s_nparts_2, __pyx_n_s_ncommon_2, __pyx_n_s_ne, __pyx_n_s_nv_2, __pyx_n_s_vwgt_2, __pyx_n_s_vsize_2, __pyx_n_s_tpwgts_2, __pyx_n_s_opts, __pyx_n_s_ret, __pyx_n_s_objval, __pyx_n_s_epart_2, __pyx_n_s_npart_2); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__37);
   __Pyx_GIVEREF(__pyx_tuple__37);
-  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(4, 8, 24, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pymetis_mesh__wrapper_pyx, __pyx_n_s_part_mesh, 71, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(4, 8, 24, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pymetis_mesh__wrapper_pyx, __pyx_n_s_part_mesh, 76, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(0, 76, __pyx_L1_error)
 
   /* "View.MemoryView":284
  *         return self.name
@@ -20176,136 +20212,112 @@ PyMODINIT_FUNC PyInit__wrapper(void)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "pymetis_mesh/_wrapper.pyx":7
+  /* "pymetis_mesh/_wrapper.pyx":12
  * 
  * cimport numpy as np
  * import numpy as np             # <<<<<<<<<<<<<<
  * from ._version import __version__
  * 
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 7, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pymetis_mesh/_wrapper.pyx":8
+  /* "pymetis_mesh/_wrapper.pyx":13
  * cimport numpy as np
  * import numpy as np
  * from ._version import __version__             # <<<<<<<<<<<<<<
  * 
  * __version__ = __version__
  */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_version_2);
   __Pyx_GIVEREF(__pyx_n_s_version_2);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_version_2);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_version, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_version, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_version_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_version_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version_2, __pyx_t_1) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version_2, __pyx_t_1) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pymetis_mesh/_wrapper.pyx":10
+  /* "pymetis_mesh/_wrapper.pyx":15
  * from ._version import __version__
  * 
  * __version__ = __version__             # <<<<<<<<<<<<<<
  * __author__ = 'Qiao Chen'
  * __copyright__ = 'Copyright 2018, Qiao Chen'
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_version_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 10, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_version_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version_2, __pyx_t_2) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version_2, __pyx_t_2) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pymetis_mesh/_wrapper.pyx":11
+  /* "pymetis_mesh/_wrapper.pyx":16
  * 
  * __version__ = __version__
  * __author__ = 'Qiao Chen'             # <<<<<<<<<<<<<<
  * __copyright__ = 'Copyright 2018, Qiao Chen'
  * 
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_author, __pyx_kp_s_Qiao_Chen) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_author, __pyx_kp_s_Qiao_Chen) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
 
-  /* "pymetis_mesh/_wrapper.pyx":12
+  /* "pymetis_mesh/_wrapper.pyx":17
  * __version__ = __version__
  * __author__ = 'Qiao Chen'
  * __copyright__ = 'Copyright 2018, Qiao Chen'             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_copyright, __pyx_kp_s_Copyright_2018_Qiao_Chen) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_copyright, __pyx_kp_s_Copyright_2018_Qiao_Chen) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
 
-  /* "pymetis_mesh/_wrapper.pyx":59
+  /* "pymetis_mesh/_wrapper.pyx":64
  * 
  * 
  * class MetisInputError(AttributeError):             # <<<<<<<<<<<<<<
  *     pass
  * 
  */
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_builtin_AttributeError);
   __Pyx_GIVEREF(__pyx_builtin_AttributeError);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_builtin_AttributeError);
-  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_MetisInputError, __pyx_n_s_MetisInputError, (PyObject *) NULL, __pyx_n_s_pymetis_mesh__wrapper, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_MetisInputError, __pyx_n_s_MetisInputError, (PyObject *) NULL, __pyx_n_s_pymetis_mesh__wrapper, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_MetisInputError, __pyx_t_2, __pyx_t_3, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_MetisInputError, __pyx_t_2, __pyx_t_3, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MetisInputError, __pyx_t_4) < 0) __PYX_ERR(0, 59, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MetisInputError, __pyx_t_4) < 0) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pymetis_mesh/_wrapper.pyx":63
+  /* "pymetis_mesh/_wrapper.pyx":68
  * 
  * 
  * class MetisMemoryError(MemoryError):             # <<<<<<<<<<<<<<
  *     pass
  * 
  */
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_builtin_MemoryError);
   __Pyx_GIVEREF(__pyx_builtin_MemoryError);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_builtin_MemoryError);
-  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_MetisMemoryError, __pyx_n_s_MetisMemoryError, (PyObject *) NULL, __pyx_n_s_pymetis_mesh__wrapper, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_MetisMemoryError, __pyx_n_s_MetisMemoryError, (PyObject *) NULL, __pyx_n_s_pymetis_mesh__wrapper, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_MetisMemoryError, __pyx_t_2, __pyx_t_3, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_MetisMemoryError, __pyx_t_2, __pyx_t_3, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MetisMemoryError, __pyx_t_4) < 0) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "pymetis_mesh/_wrapper.pyx":67
- * 
- * 
- * class MetisError(RuntimeError):             # <<<<<<<<<<<<<<
- *     pass
- * 
- */
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 67, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_INCREF(__pyx_builtin_RuntimeError);
-  __Pyx_GIVEREF(__pyx_builtin_RuntimeError);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_builtin_RuntimeError);
-  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_MetisError, __pyx_n_s_MetisError, (PyObject *) NULL, __pyx_n_s_pymetis_mesh__wrapper, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 67, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_MetisError, __pyx_t_2, __pyx_t_3, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MetisError, __pyx_t_4) < 0) __PYX_ERR(0, 67, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MetisMemoryError, __pyx_t_4) < 0) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -20313,63 +20325,87 @@ PyMODINIT_FUNC PyInit__wrapper(void)
 
   /* "pymetis_mesh/_wrapper.pyx":72
  * 
+ * 
+ * class MetisError(RuntimeError):             # <<<<<<<<<<<<<<
+ *     pass
+ * 
+ */
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_INCREF(__pyx_builtin_RuntimeError);
+  __Pyx_GIVEREF(__pyx_builtin_RuntimeError);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_builtin_RuntimeError);
+  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_2, __pyx_n_s_MetisError, __pyx_n_s_MetisError, (PyObject *) NULL, __pyx_n_s_pymetis_mesh__wrapper, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_MetisError, __pyx_t_2, __pyx_t_3, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_MetisError, __pyx_t_4) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "pymetis_mesh/_wrapper.pyx":77
+ * 
  * def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,
  *     int nparts, *, int ncommon=1, idx_t[::1] vwgt=None, idx_t[::1] vsize=None,             # <<<<<<<<<<<<<<
  *     real_t[::1] tpwgts=None, one_base=False, elemental=True,
  *     idx_t[::1] epart=None, idx_t[::1] npart=None):
  */
   __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(Py_None);
-  if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 72, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 77, __pyx_L1_error)
   __pyx_k_ = __pyx_t_5;
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
   __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(Py_None);
-  if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 72, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 77, __pyx_L1_error)
   __pyx_k__2 = __pyx_t_5;
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "pymetis_mesh/_wrapper.pyx":73
+  /* "pymetis_mesh/_wrapper.pyx":78
  * def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,
  *     int nparts, *, int ncommon=1, idx_t[::1] vwgt=None, idx_t[::1] vsize=None,
  *     real_t[::1] tpwgts=None, one_base=False, elemental=True,             # <<<<<<<<<<<<<<
  *     idx_t[::1] epart=None, idx_t[::1] npart=None):
- *     cdef:
+ *     """The main partition interface
  */
   __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_real_t(Py_None);
-  if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 73, __pyx_L1_error)
+  if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 78, __pyx_L1_error)
   __pyx_k__3 = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "pymetis_mesh/_wrapper.pyx":74
+  /* "pymetis_mesh/_wrapper.pyx":79
  *     int nparts, *, int ncommon=1, idx_t[::1] vwgt=None, idx_t[::1] vsize=None,
  *     real_t[::1] tpwgts=None, one_base=False, elemental=True,
  *     idx_t[::1] epart=None, idx_t[::1] npart=None):             # <<<<<<<<<<<<<<
- *     cdef:
- *         # inputs
+ *     """The main partition interface
+ * 
  */
   __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(Py_None);
-  if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 74, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 79, __pyx_L1_error)
   __pyx_k__4 = __pyx_t_5;
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
   __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_idx_t(Py_None);
-  if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 74, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 79, __pyx_L1_error)
   __pyx_k__5 = __pyx_t_5;
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "pymetis_mesh/_wrapper.pyx":71
+  /* "pymetis_mesh/_wrapper.pyx":76
  * 
  * 
  * def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,             # <<<<<<<<<<<<<<
  *     int nparts, *, int ncommon=1, idx_t[::1] vwgt=None, idx_t[::1] vsize=None,
  *     real_t[::1] tpwgts=None, one_base=False, elemental=True,
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_12pymetis_mesh_8_wrapper_1part_mesh, NULL, __pyx_n_s_pymetis_mesh__wrapper); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_12pymetis_mesh_8_wrapper_1part_mesh, NULL, __pyx_n_s_pymetis_mesh__wrapper); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_part_mesh, __pyx_t_2) < 0) __PYX_ERR(0, 71, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_part_mesh, __pyx_t_2) < 0) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "pymetis_mesh/_wrapper.pyx":1
@@ -20379,6 +20415,7 @@ PyMODINIT_FUNC PyInit__wrapper(void)
  */
   __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_t_2, __pyx_kp_u_part_mesh_line_76, __pyx_kp_u_The_main_partition_interface_Par) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
