@@ -52,6 +52,10 @@ _inc_dirs = [
     numpy.get_include(),
 ]
 
+_libs = None
+_lib_dir = None
+_rpath = None
+
 _srcs = ['pymetis_mesh/_wrapper.c']
 
 if not flag_root[0]:
@@ -60,12 +64,15 @@ if not flag_root[0]:
         'pymetis_mesh/src/libmetis',
         'pymetis_mesh/src/include'
     ]
-elif flag_root[1] != '':
-    _inc_dirs += [flag_root[1] + os.sep + 'include']
-
-if not flag_root[0]:
     _srcs += glob.glob('pymetis_mesh/src/GKlib/*.c') + \
         glob.glob('pymetis_mesh/src/libmetis/*.c')
+elif flag_root[1] != '':
+    _inc_dirs += [flag_root[1] + os.sep + 'include']
+    _libs = ['metis']
+    _lib_dir = [flag_root[1] + os.sep + 'lib']
+    _rpath = [flag_root[1] + os.sep + 'lib']
+else:
+    _libs = ['metis']
 
 
 install_requires = [
@@ -77,6 +84,9 @@ ext = Extension(
     _srcs,
     include_dirs=_inc_dirs,
     extra_compile_args=['-w', '-O3'],
+    libraries=_libs,
+    library_dirs=_lib_dir,
+    runtime_library_dirs=_rpath
 )
 
 classifiers = [
@@ -96,6 +106,7 @@ setup(
     name='pymetis_mesh',
     version=version,
     description='Partitioning Finite Element Meshes with METIS in Python',
+    long_description=open('README.md', 'r').read(),
     author='Qiao Chen',
     author_email='benechiao@gmail.com',
     keywords='Math',
