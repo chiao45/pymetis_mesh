@@ -3,6 +3,7 @@ import re
 import numpy
 import glob
 import os
+import sys
 
 
 vfile = open('pymetis_mesh/_version.py', mode='r')
@@ -19,7 +20,6 @@ vfile.close()
 def config_libmetis():
     """Configure metis, decide whether or not use the metis source
     comes with pymetis_mesh"""
-    import sys
     import distutils
     from distutils.ccompiler import get_default_compiler, new_compiler
     import tempfile
@@ -56,16 +56,16 @@ _srcs = ['pymetis_mesh/_wrapper.c']
 
 if not flag_root[0]:
     _inc_dirs += [
-        'metis-5.1.0/GKlib',
-        'metis-5.1.0/libmetis',
-        'metis-5.1.0/include'
+        'pymetis_mesh/src/GKlib',
+        'pymetis_mesh/src/libmetis',
+        'pymetis_mesh/src/include'
     ]
 elif flag_root[1] != '':
     _inc_dirs += [flag_root[1] + os.sep + 'include']
 
 if not flag_root[0]:
-    _srcs += glob.glob('metis-5.1.0/GKlib/*.c') + \
-        glob.glob('metis-5.1./libmetis/*.c')
+    _srcs += glob.glob('pymetis_mesh/src/GKlib/*.c') + \
+        glob.glob('pymetis_mesh/src/libmetis/*.c')
 
 
 install_requires = [
