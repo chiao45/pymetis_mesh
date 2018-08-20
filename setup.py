@@ -35,15 +35,23 @@ def config_libmetis():
         metis_root = ''
         inc_dir = ''
     compiler = new_compiler(get_default_compiler())
-    # got from pyamg
-    with tempfile.NamedTemporaryFile('w', suffix='.c') as f:
-        f.write('#include \"metis.h\"\nint main(void){return 0;}')
+    tmp_file_name = tempfile.gettempdir() + os.sep + 'foo.c'
+    f = open(tmp_file_name, 'w')
+    f.write('#include \"metis.h\"\nint main(void){return 0;}')
+    f.close()
+    def remove():
         try:
-            include_dirs = [] if inc_dir == '' else [inc_dir]
-            compiler.compile([f.name], include_dirs=include_dirs)
-            return True, metis_root
-        except distutils.errors.CompileError:
-            return False, ''
+            os.remove(tmp_file_name)
+        except OSError:
+            pass
+    try:
+        include_dirs = [] if inc_dir == '' else [inc_dir]
+        compiler.compile([tmp_file_name], include_dirs=include_dirs)
+        remove()
+        return True, metis_root
+    except distutils.errors.CompileError:
+        remove()
+        return False, ''
 
 
 flag_root = config_libmetis()
