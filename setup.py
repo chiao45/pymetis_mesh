@@ -102,7 +102,9 @@ setup(
     license='MIT',
     url='https://github.com/chiao45/pymetis_mesh',
     packages=['pymetis_mesh'],
+    package_data={'pymetis_mesh': [
+        'src/GKlib/*', 'src/include/*', 'src/libmetis/*']},
     install_requires=install_requires,
     ext_modules=[ext],
-    classifiers=classifiers,
+    classifiers=classifiers
 )
