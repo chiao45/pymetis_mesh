@@ -4,6 +4,7 @@ import numpy
 import glob
 import os
 import sys
+import codecs
 
 
 vfile = open('pymetis_mesh/_version.py', mode='r')
@@ -39,6 +40,7 @@ def config_libmetis():
     f = open(tmp_file_name, 'w')
     f.write('#include \"metis.h\"\nint main(void){return 0;}')
     f.close()
+
     def remove():
         try:
             os.remove(tmp_file_name)
@@ -115,7 +117,7 @@ setup(
     name='pymetis_mesh',
     version=version,
     description='Partitioning Finite Element Meshes with METIS in Python',
-    long_description=open('README.md', 'r').read(),
+    long_description=codecs.open('README.md', encoding='utf-8').read(),
     author='Qiao Chen',
     author_email='benechiao@gmail.com',
     keywords='Math',
