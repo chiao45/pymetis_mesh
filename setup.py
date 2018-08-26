@@ -108,7 +108,7 @@ classifiers = [
     'License :: OSI Approved :: MIT License',
     'Topic :: Scientific/Engineering',
     'Topic :: Software Development',
-    'Operating System :: POSIX',
+    'Operating System :: POSIX :: Linux',
     'Intended Audience :: Science/Research',
 ]
 
@@ -117,15 +117,21 @@ setup(
     name='pymetis_mesh',
     version=version,
     description='Partitioning Finite Element Meshes with METIS in Python',
-    long_description=codecs.open('README.md', encoding='utf-8').read(),
+    long_description=codecs.open('README.rst', encoding='utf-8').read(),
     author='Qiao Chen',
     author_email='benechiao@gmail.com',
     keywords='Math',
     license='MIT',
     url='https://github.com/chiao45/pymetis_mesh',
     packages=['pymetis_mesh'],
-    package_data={'pymetis_mesh': [
-        'src/GKlib/*', 'src/include/*', 'src/libmetis/*']},
+    package_data={
+        'pymetis_mesh': [
+            '*.pyx',
+            'src/GKlib/*',
+            'src/include/*',
+            'src/libmetis/*'
+        ]
+    },
     install_requires=install_requires,
     ext_modules=[ext],
     classifiers=classifiers
