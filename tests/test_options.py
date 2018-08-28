@@ -8,8 +8,11 @@ from load_mesh import load_mesh
 
 def test_options1():
     nv, ne, eptr, eind = load_mesh()
+    opts = Options()
+    opts.ptype = PTYPE_RB
+    opts.ctype = CTYPE_SHEM
     outputs = part_mesh(nv, eptr, eind, 4, ncommon=3,
-                        debug=DBG_INFO, ptype=PTYPE_RB, ctype=CTYPE_SHEM)
+                        debug=DBG_INFO, opts=opts)
     assert outputs['epart'].size == ne
     assert outputs['npart'].size == nv
     assert sum([np.where(outputs['epart'] == x)[0].size
@@ -18,8 +21,10 @@ def test_options1():
 
 def test_options2():
     nv, ne, eptr, eind = load_mesh()
+    opts = Options()
+    opts.objtype = OBJTYPE_VOL
     outputs = part_mesh(nv, eptr, eind, 4, ncommon=3, elemental=False,
-                        debug=DBG_INFO, objtype=OBJTYPE_VOL)
+                        debug=DBG_INFO, opts=opts)
     assert outputs['epart'].size == ne
     assert outputs['npart'].size == nv
     assert sum([np.where(outputs['npart'] == x)[0].size
