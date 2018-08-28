@@ -1,3 +1,4 @@
+import pymetis_mesh.errors as errors
 from ._version import __version__
 from ._wrapper import *
 
