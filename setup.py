@@ -126,6 +126,7 @@ setup(
     packages=['pymetis_mesh'],
     package_data={
         'pymetis_mesh': [
+            '*.pxd',
             '*.pyx',
             'src/GKlib/*',
             'src/include/*',
