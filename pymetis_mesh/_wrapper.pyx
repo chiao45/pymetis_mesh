@@ -9,8 +9,6 @@ to map to the original APIs with numpy ndarrays as input/output arguments.
 
 Attributes
 ----------
-OPTIONS: list of str
-    tunable option parameters
 PTYPE_RB: int
     Multilevel recursive bisectioning partitioning method
 PTYPE_KWAY: int
@@ -33,119 +31,246 @@ RTYPE_SEP1SIDED: int
     One-sided node FM refinement
 """
 
+from libc.stdlib cimport malloc, free
+cimport cython
 cimport numpy as np
+cimport pymetis_mesh as libmetis
+
 import numpy as np
 from ._version import __version__
+from .errors import *
+
+
+DEF NOPTIONS = 40
 
 __version__ = __version__
 __author__ = 'Qiao Chen'
 __copyright__ = 'Copyright 2018, Qiao Chen'
 
+__all__ = [
+    'PTYPE_RB',
+    'PTYPE_KWAY',
+    'OBJTYPE_CUT',
+    'OBJTYPE_VOL',
+    'OBJTYPE_NODE',
+    'CTYPE_RM',
+    'CTYPE_SHEM',
+    'RTYPE_FM',
+    'RTYPE_GREEDY',
+    'RTYPE_SEP2SIDED',
+    'RTYPE_SEP1SIDED',
+    'DEFAULT',
+    'Options',
+    'part_mesh',
+]
 
-DEF NOPTIONS = 40
+# simply define all option values as module attributes
 
+PTYPE_RB = libmetis.ptype_rb
+PTYPE_KWAY = libmetis.ptype_kway
 
-cdef extern from 'metis.h' nogil:
-    ctypedef int idx_t
-    ctypedef float real_t
-    int nmbr 'METIS_OPTION_NUMBERING'
-    int dbglvl 'METIS_OPTION_DBGLVL'
-    int err_in 'METIS_ERROR_INPUT'
-    int err_mem 'METIS_ERROR_MEMORY'
-    int err 'METIS_ERROR'
+OBJTYPE_CUT = libmetis.objtype_cut
+OBJTYPE_VOL = libmetis.objtype_vol
+OBJTYPE_NODE = libmetis.objtype_node
 
-    # APIs
-    int METIS_PartMeshDual(
-        idx_t *ne,
-        idx_t *nn,
-        idx_t *eptr,
-        idx_t *eind,
-        idx_t *vwgt,
-        idx_t *vsize,
-        idx_t *ncommon,
-        idx_t *nparts,
-        real_t *tpwgts,
-        idx_t *options,
-        idx_t *objval,
-        idx_t *epart,
-        idx_t *npart
-    )
-    int METIS_PartMeshNodal(
-        idx_t *ne,
-        idx_t *nn,
-        idx_t *eptr,
-        idx_t *eind,
-        idx_t *vwgt,
-        idx_t *vsize,
-        idx_t *nparts,
-        real_t *tpwgts,
-        idx_t *options,
-        idx_t *objval,
-        idx_t *epart,
-        idx_t *npart
-    )
-    int METIS_SetDefaultOptions(idx_t *options)
+CTYPE_RM = libmetis.ctype_rm
+CTYPE_SHEM = libmetis.ctype_shem
 
-    # options
-    int ptype 'METIS_OPTION_PTYPE'
-    int objtype 'METIS_OPTION_OBJTYPE'
-    int ctype 'METIS_OPTION_CTYPE'
-    int rtype 'METIS_OPTION_RTYPE'
-    int niter 'METIS_OPTION_NITER'
-    int ufactor 'METIS_OPTION_UFACTOR'
+RTYPE_FM = libmetis.rtype_fm
+RTYPE_GREEDY = libmetis.rtype_greedy
+RTYPE_SEP2SIDED = libmetis.rtype_sep2sided
+RTYPE_SEP1SIDED = libmetis.rtype_sep1sided
 
-    # option values
+DEFAULT = -1
 
-    int ptype_rb 'METIS_PTYPE_RB'
-    int ptype_kway 'METIS_PTYPE_KWAY'
-
-    int objtype_cut 'METIS_OBJTYPE_CUT'
-    int objtype_vol 'METIS_OBJTYPE_VOL'
-    int objtype_node 'METIS_OBJTYPE_NODE'
-
-    int ctype_rm 'METIS_CTYPE_RM'
-    int ctype_shem 'METIS_CTYPE_SHEM'
-
-    int rtype_fm 'METIS_RTYPE_FM'
-    int rtype_greedy 'METIS_RTYPE_GREEDY'
-    int rtype_sep2sided 'METIS_RTYPE_SEP2SIDED'
-    int rtype_sep1sided 'METIS_RTYPE_SEP1SIDED'
+_PTYPE_STR = {
+    PTYPE_RB : 'PTYPE_RB',
+    PTYPE_KWAY : 'PTYPE_KWAY',
+    DEFAULT : 'DEFAULT',
+}
+_OBJTYPE_STR = {
+    OBJTYPE_CUT : 'OBJTYPE_CUT',
+    OBJTYPE_VOL : 'OBJTYPE_VOL',
+    OBJTYPE_NODE : 'OBJTYPE_NODE',
+    DEFAULT : 'DEFAULT',
+}
+_CTYPE_STR = {
+    CTYPE_RM : 'CTYPE_RM',
+    CTYPE_SHEM : 'CTYPE_SHEM',
+    DEFAULT : 'DEFAULT',
+}
+_RTYPE_STR = {
+    RTYPE_FM : 'RTYPE_FM',
+    RTYPE_GREEDY : 'RTYPE_GREEDY',
+    RTYPE_SEP2SIDED : 'RTYPE_SEP2SIDED',
+    RTYPE_SEP1SIDED : 'RTYPE_SEP1SIDED',
+    DEFAULT : 'DEFAULT',
+}
+_ATTR2STRS = {
+    'ptype': lambda x: _PTYPE_STR[x],
+    'objtype': lambda x: _OBJTYPE_STR[x],
+    'ctype': lambda x: _CTYPE_STR[x],
+    'rtype': lambda x: _RTYPE_STR[x],
+    'niter': lambda x: '10' if x == -1 else '{}'.format(x),
+    'ufactor': lambda x: '30' if x == -1 else '{}'.format(x),
+}
 
 
-class MetisInputError(AttributeError):
-    pass
+cdef class Options:
+    """Option switches for METIS mesh partitioning
+
+    Attributes
+    ----------
+    ptype: int
+        Partition schemes
+    objtype: int
+        minimization requirements
+    ctype: int
+        coarsening schemes
+    rtype: int
+        refinement schemes
+    niter: int
+        number of refinement iterations
+    ufactor: int
+        local imbalance parameter
+
+    Examples
+    --------
+    >>> from pymetis_mesh import *
+    >>> opts = Options()
+    >>> opts.ptype = PTYPE_RB
+    """
+
+    def __init__(self):
+        pass
+
+    def __cinit__(self):
+        libmetis.METIS_SetDefaultOptions(self.opts)
+
+    def __dealloc__(self):
+        pass
+
+    @property
+    def ptype(self):
+        """Partition method
+
+        Define the partition methods used, possible values are:
+        :attr:`PTYPE_RB`, :attr:`PTYPE_KWAY`
+        """
+        return self.opts[libmetis._ptype]
+
+    @ptype.setter
+    def ptype(self, int p):
+        if p != PTYPE_RB and p != PTYPE_KWAY:
+            raise MetisInputError('unknown ptype %r' % p)
+        self.opts[libmetis._ptype] = <int> p
+
+    @property
+    def objtype(self):
+        """minimization requirements
+
+        possible values are: :attr:`OBJTYPE_CUT`, :attr:`OBJTYPE_VOL`,
+        and :attr:`OBJTYPE_NODE`.
+        """
+        return self.opts[libmetis._objtype]
+
+    @objtype.setter
+    def objtype(self, int obj):
+        if obj != OBJTYPE_CUT and obj != OBJTYPE_VOL and obj != OBJTYPE_NODE:
+            raise MetisInputError('unknown objtype %r' % obj)
+        self.opts[libmetis._objtype] = <int> obj
+
+    @property
+    def ctype(self):
+        """Get the coarsening scheme
+
+        possible values are: :attr:`CTYPE_RM` and :attr:`CTYPE_SHEM`
+        """
+        return self.opts[libmetis._ctype]
+
+    @ctype.setter
+    def ctype(self, int c):
+        if c != CTYPE_RM and c != CTYPE_SHEM:
+            raise MetisInputError('unknown ctype %r' % c)
+        self.opts[libmetis._ctype] = <int> c
+
+    @property
+    def rtype(self):
+        """Get the refinement scheme
+
+        Possible values are: :attr:`RTYPE_FM`, :attr:`RTYPE_GREEDY`,
+        :attr:`RTYPE_SEP2SIDED`. and :attr:`RTYPE_SEP1SIDED`
+        """
+        return self.opts[libmetis._rtype]
+
+    @rtype.setter
+    def rtype(self, int r):
+        if r != RTYPE_FM and r != RTYPE_GREEDY and r != RTYPE_SEP2SIDED \
+            and r != RTYPE_SEP1SIDED:
+            raise MetisInputError('unknown rtype %r' % r)
+        self.opts[libmetis._rtype] = <int> r
+
+    @property
+    def niter(self):
+        """int: Get the number of iterations used in refinement step
+
+        .. note:: The default value is 10
+        """
+        cdef int n = self.opts[libmetis._niter]
+        return 10 if n == DEFAULT else n
+
+    @niter.setter
+    def niter(self, int its):
+        if its <= 0:
+            raise MetisInputError('Invalid interation number %i' % its)
+        self.opts[libmetis._niter] = <int> its
+
+    @property
+    def ufactor(self):
+        """int: Get the maximum allowed load imbalance among the partitions"""
+        cdef int n = self.opts[libmetis._ufactor]
+        return 30 if n == DEFAULT else n
+
+    @ufactor.setter
+    def ufactor(self, int u):
+        self.opts[libmetis._ufactor] = <int> u
+
+    def __str__(self):
+        str = ''
+        for attr in Options.__dict__:
+            try:
+                str += attr + ':' + _ATTR2STRS[attr](getattr(self, attr)) + '\n'
+            except Exception:
+                pass
+        return str
+
+    def __repr__(self):
+        return self.__str__()
 
 
-class MetisMemoryError(MemoryError):
-    pass
+# helper function
+@cython.inline
+cdef void _copy_opts(libmetis.idx_t *opts_out, Options opts_in):
+    cdef int i
+    for i in range(NOPTIONS):
+        opts_out[i] = opts_in.opts[i]
 
 
-class MetisError(RuntimeError):
-    pass
-
-
-OPTIONS = ['ptype', 'objtype', 'ctype', 'rtype', 'niter', 'ufactor']
-
-PTYPE_RB = ptype_rb
-PTYPE_KWAY = ptype_kway
-
-OBJTYPE_CUT = objtype_cut
-OBJTYPE_VOL = objtype_vol
-OBJTYPE_NODE = objtype_node
-
-CTYPE_RM = ctype_rm
-CTYPE_SHEM = ctype_shem
-
-RTYPE_FM = rtype_fm
-RTYPE_GREEDY = rtype_greedy
-RTYPE_SEP2SIDED = rtype_sep2sided
-RTYPE_SEP1SIDED = rtype_sep1sided
-
-
-def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,
-    int nparts, *, int ncommon=1, idx_t[::1] vwgt=None, idx_t[::1] vsize=None,
-    real_t[::1] tpwgts=None, one_base=False, elemental=True, debug=0,
-    idx_t[::1] epart=None, idx_t[::1] npart=None, **ops):
+def part_mesh(
+    int nv,
+    libmetis.idx_t[::1] eptr not None,
+    libmetis.idx_t[::1] eind not None,
+    int nparts, *,
+    int ncommon=1,
+    libmetis.idx_t[::1] vwgt=None,
+    libmetis.idx_t[::1] vsize=None,
+    libmetis.real_t[::1] tpwgts=None,
+    one_base=False,
+    elemental=True,
+    debug=0,
+    Options opts=None,
+    libmetis.idx_t[::1] epart=None,
+    libmetis.idx_t[::1] npart=None):
     """The main partition interface
 
     Parameters
@@ -172,6 +297,8 @@ def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,
         ``True`` if doing element-based partition
     debug: int (optional)
         debug level
+    opts: :class:`Options`
+        additional switch control parameters
     epart : memory view (optional)
         buffer output of element partition
     npart : memory view (optional)
@@ -193,77 +320,82 @@ def part_mesh(int nv, idx_t[::1] eptr not None, idx_t[::1] eind not None,
     """
     cdef:
         # inputs
-        idx_t _nparts = nparts
-        idx_t _ncommon = ncommon
-        idx_t _ne = len(eptr) - 1
-        idx_t _nv = nv
-        idx_t *_vwgt = &vwgt[0] if vwgt is not None else NULL
-        idx_t *_vsize = &vsize[0] if vsize is not None else NULL
-        real_t *_tpwgts = &tpwgts[0] if tpwgts is not None else NULL
-        idx_t opts[NOPTIONS]
+        libmetis.idx_t _nparts = nparts
+        libmetis.idx_t _ncommon = ncommon
+        libmetis.idx_t _ne = len(eptr) - 1
+        libmetis.idx_t _nv = nv
+        libmetis.idx_t *_vwgt = &vwgt[0] if vwgt is not None else NULL
+        libmetis.idx_t *_vsize = &vsize[0] if vsize is not None else NULL
+        libmetis.real_t *_tpwgts = &tpwgts[0] if tpwgts is not None else NULL
         int ret
         int dbg = <int> debug
+        libmetis.idx_t _opts[NOPTIONS]
         # outputs
-        idx_t objval
+        libmetis.idx_t objval
         np.ndarray[np.int32_t, ndim=1] _epart
         np.ndarray[np.int32_t, ndim=1] _npart
-    assert _nparts > 0
-    assert _vwgt == NULL or (len(vwgt) == _ne and elemental) or len(vwgt) == _nv
-    assert _vsize == NULL or (len(vsize) == _ne and elemental) or len(vwgt) == _nv
-    assert _tpwgts == NULL or len(tpwgts) == _nparts
-    assert dbg >= 0
+    if _nparts <= 0:
+        raise MetisInputError('nparts')
+    if not (_vwgt == NULL or (len(vwgt) == _ne and elemental) or len(vwgt) == _nv):
+        raise MetisInputError('vwgt')
+    if not (_vsize == NULL or (len(vsize) == _ne and elemental) or len(vwgt) == _nv):
+        raise MetisInputError('vsize')
+    if not (_tpwgts == NULL or len(tpwgts) == _nparts):
+        raise MetisInputError('tpwgts')
+    if dbg < 0:
+        raise MetisInputError('debug')
     if epart is None:
         _epart = np.empty(_ne, dtype=np.int32)
     else:
-        assert len(epart) == _ne
+        if len(epart) != _ne:
+            raise MetisInputError('epart')
         _epart = np.asarray(epart)
     if npart is None:
         _npart = np.empty(_nv, dtype=np.int32)
     else:
-        assert len(npart) == _nv
+        if len(npart) != _nv:
+            raise MetisInputError('npart')
         _npart = np.asarray(npart)
-    # set default options
-    METIS_SetDefaultOptions(opts)
-    opts[nmbr] = 1 if one_base else 0
-    if dbg:
-        opts[dbglvl] = dbg
-    # parse options
-    _ptype = ops.pop('ptype', None)
-    if _ptype is not None:
-        if _ptype != PTYPE_RB and _ptype != PTYPE_KWAY:
-            raise MetisInputError('unknown ptype %r' % _ptype)
-        opts[ptype] = <int> _ptype
-    _objtype = ops.pop('objtype', None)
-    if _objtype is not None:
-        if _objtype != OBJTYPE_CUT and _objtype != OBJTYPE_VOL\
-            and _objtype != OBJTYPE_NODE:
-            raise MetisInputError('unknown objtype %r' % _objtype)
-        opts[objtype] = <int> _objtype
-    _ctype = ops.pop('ctype', None)  # coarsen
-    if _ctype is not None:
-        if _ctype != CTYPE_RM and _ctype != CTYPE_SHEM:
-            raise MetisInputError('unknown ctype %r' % _ctype)
-        opts[ctype] = <int> _ctype
-    _rtype = ops.pop('rtype', None)  # refine
-    if _rtype is not None:
-        if _rtype != RTYPE_FM and _rtype != RTYPE_GREEDY \
-            and _rtype != RTYPE_SEP2SIDED and _rtype != RTYPE_SEP1SIDED:
-            raise MetisInputError('unknown rtype %r' % _rtype)
-        opts[rtype] = <int> _rtype
-    _niter = ops.pop('niter', None)
-    if _niter is not None:
-        opts[niter] = <int> _niter
-    _ufactor = ops.pop('ufactor', None)
-    if _ufactor is not None:
-        opts[ufactor] = <int> _ufactor
-    if elemental:
-        ret = METIS_PartMeshDual(&_ne, &_nv, <idx_t *> &eptr[0],
-            <idx_t *> &eind[0], _vwgt, _vsize, &_ncommon, &_nparts, _tpwgts,
-            opts, &objval, <idx_t *> _epart.data, <idx_t *> _npart.data)
+    if opts is None:
+        libmetis.METIS_SetDefaultOptions(_opts)
     else:
-        ret = METIS_PartMeshNodal(&_ne, &_nv, <idx_t *> &eptr[0],
-            <idx_t *> &eind[0], _vwgt, _vsize, &_nparts, _tpwgts, opts, &objval,
-            <idx_t *> _epart.data, <idx_t *> _npart.data)
+        if not isinstance(opts, Options):
+            raise MetisInputError('opts')
+        _copy_opts(_opts, opts)
+    _opts[libmetis.nmbr] = 1 if one_base else 0
+    if dbg:
+        _opts[libmetis.dbglvl] = dbg
+    if elemental:
+        ret = libmetis.METIS_PartMeshDual(
+            &_ne,
+            &_nv,
+            <libmetis.idx_t *> &eptr[0],
+            <libmetis.idx_t *> &eind[0],
+            _vwgt,
+            _vsize,
+            &_ncommon,
+            &_nparts,
+            _tpwgts,
+            _opts,
+            &objval,
+            <libmetis.idx_t *> _epart.data,
+            <libmetis.idx_t *> _npart.data
+        )
+    else:
+        ret = libmetis.METIS_PartMeshNodal(
+            &_ne,
+            &_nv,
+            <libmetis.idx_t *> &eptr[0],
+            <libmetis.idx_t *> &eind[0],
+            _vwgt,
+            _vsize,
+            &_nparts,
+            _tpwgts,
+            _opts,
+            &objval,
+            <libmetis.idx_t *> _epart.data,
+            <libmetis.idx_t *> _npart.data
+        )
     if ret == 1:
         return {'cuts': objval, 'epart': _epart, 'npart': _npart}
     elif ret == err_in:
