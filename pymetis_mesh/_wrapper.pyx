@@ -31,8 +31,6 @@ RTYPE_SEP1SIDED: int
     One-sided node FM refinement
 """
 
-from libc.stdlib cimport malloc, free
-cimport cython
 cimport numpy as np
 cimport pymetis_mesh as libmetis
 
@@ -249,8 +247,7 @@ cdef class Options:
 
 
 # helper function
-@cython.inline
-cdef void _copy_opts(libmetis.idx_t *opts_out, Options opts_in):
+cdef inline void _copy_opts(libmetis.idx_t *opts_out, Options opts_in) nogil:
     cdef int i
     for i in range(NOPTIONS):
         opts_out[i] = opts_in.opts[i]
