@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
-Building METIS requires CMake 2.8, found at http://www.cmake.org/, as
-well as GNU make. Assumming CMake and GNU make are installed, two
-commands should suffice to build metis:
+Building ParMETIS requires CMake 2.8, found at http://www.cmake.org/, as well as
+GNU make. Assumming CMake and GNU make are installed, two commands should
+suffice to build ParMETIS:
 
      $ make config
      $ make
@@ -9,15 +9,16 @@ commands should suffice to build metis:
 
 Configuration
 -------------
-METIS is primarily configured by passing options to make config. For
+ParMETIS is primarily configured by passing options to make config. For
 example:
 
-     $ make config shared=1 cc=gcc-4.2
+     $ make config shared=1 
 
-would configure metis to be built as a shared library using GCC 4.2.
+would configure ParMETIS to be built as a shared library.
 
 Common configuration options are:
-  cc=[compiler]   - The C compiler to use [default is determined by CMake]
+  cc=[compiler]   - The C compiler to use [default is mpicc]
+  cxx=[compiler]  - The C++ compiler to use [default is mpicxx]
   shared=1        - Build a shared library instead of a static one 
                     [off by default]
   prefix=[PATH]   - Set the installation prefix [/usr/local/ by default]
@@ -28,22 +29,18 @@ Advanced debugging related options:
   assert=1    - Enable asserts [off by default]
   assert2=1   - Enable very expensive asserts [off by default]
 
-METIS' index and real data type size can be configured by editing
-include/metis.h.
-
-
 Installation
 ------------
-To install METIS, run
+To install ParMETIS, run
 
     $ make install
 
 The default installation prefix is /usr/local. To pick an installation 
-prefix for METIS pass prefix=[path] to make config. For example,
+prefix for ParMETIS pass prefix=[path] to make config. For example,
 
     $ make config prefix=~/myroot/
 
-will cause METIS to be installed in ~/myroot/ when make install is run.
+will cause ParMETIS to be installed in ~/myroot/ when make install is run.
 
 
 Other make commands

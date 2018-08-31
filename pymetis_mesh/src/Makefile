@@ -3,15 +3,18 @@ gdb        = not-set
 assert     = not-set
 assert2    = not-set
 debug      = not-set
-gprof      = not-set
 openmp     = not-set
 prefix     = not-set
 gklib_path = not-set
+metis_path = not-set
 shared     = not-set
-cc         = not-set
+cc         = mpicc
+cxx        = mpicxx
 
 
 # Basically proxies everything to the builddir cmake.
+
+PKGNAME = parmetis-4.0.3
 
 cputype = $(shell uname -m | sed "s/\\ /_/g")
 systype = $(shell uname -s)
@@ -21,9 +24,12 @@ BUILDDIR = build/$(systype)-$(cputype)
 # Process configuration options.
 CONFIG_FLAGS = -DCMAKE_VERBOSE_MAKEFILE=1
 ifeq ($(gklib_path), not-set)
-    gklib_path = GKlib
+    gklib_path = metis/GKlib
 endif
-CONFIG_FLAGS += -DGKLIB_PATH=$(abspath $(gklib_path))
+ifeq ($(metis_path), not-set)
+    metis_path = metis
+endif
+CONFIG_FLAGS += -DGKLIB_PATH=$(abspath $(gklib_path)) -DMETIS_PATH=$(abspath $(metis_path))
 ifneq ($(gdb), not-set)
     CONFIG_FLAGS += -DGDB=$(gdb)
 endif
@@ -35,9 +41,6 @@ ifneq ($(assert2), not-set)
 endif
 ifneq ($(debug), not-set)
     CONFIG_FLAGS += -DDEBUG=$(debug)
-endif
-ifneq ($(gprof), not-set)
-    CONFIG_FLAGS += -DGPROF=$(gprof)
 endif
 ifneq ($(openmp), not-set)
     CONFIG_FLAGS += -DOPENMP=$(openmp)
@@ -51,9 +54,9 @@ endif
 ifneq ($(cc), not-set)
     CONFIG_FLAGS += -DCMAKE_C_COMPILER=$(cc)
 endif
-
-VERNUM=5.1.0
-PKGNAME=metis-$(VERNUM)
+ifneq ($(cxx), not-set)
+    CONFIG_FLAGS += -DCMAKE_CXX_COMPILER=$(cxx)
+endif
 
 define run-config
 mkdir -p $(BUILDDIR)
@@ -80,6 +83,7 @@ remake:
 	find . -name CMakeLists.txt -exec touch {} ';'
 
 dist:
-	utils/mkdist.sh $(PKGNAME)
+	util/mkdist.sh $(PKGNAME)
 
-.PHONY: config distclean all clean install uninstall remake dist
+
+.PHONY: config distclean dist all clean install uninstall remake
