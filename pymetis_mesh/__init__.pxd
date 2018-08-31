@@ -3,7 +3,7 @@
 cimport libc.stdint as stdint
 
 
-cdef extern from 'metis.h' nogil:
+cdef extern from 'src/metis/include/metis.h' nogil:
     ctypedef stdint.int32_t idx_t
     ctypedef float real_t
 
