@@ -14,3 +14,8 @@ DBG_SEPINFO = 64
 DBG_CONNINFO = 128
 DBG_CONTIGINFO = 256
 DBG_MEMORY = 2048
+
+
+def get_include():
+    import os
+    return os.path.abspath(os.path.dirname(os.path.abspath(__file__)))

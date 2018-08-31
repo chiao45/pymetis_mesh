@@ -28,3 +28,5 @@ License
 MIT License
 
 Copyright (c) 2018 Qiao Chen
+
+``METIS`` and ``ParMETIS`` have their own licenses, please check the source directory.
