@@ -1,13 +1,13 @@
-from setuptools import setup, Extension
 import re
-import numpy
 import glob
 import os
-import sys
 import codecs
+import numpy
+from setuptools import setup, Extension, find_packages
 
 
-vfile = open('pymetis_mesh/_version.py', mode='r')
+_join = os.path.join
+vfile = open(_join('pymetis_mesh', '_version.py'), mode='r')
 vstr_raw = vfile.read()
 vstr_find = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", vstr_raw, re.M)
 if vstr_find:
@@ -18,87 +18,23 @@ else:
 vfile.close()
 
 
-def config_libmetis():
-    """Configure metis, decide whether or not use the metis source
-    comes with pymetis_mesh"""
-    import distutils
-    from distutils.ccompiler import get_default_compiler, new_compiler
-    import tempfile
-    if '--user' in sys.argv:
-        is_user = True
-    else:
-        is_user = False
-    if is_user:
-        from site import USER_BASE
-        metis_root = USER_BASE
-        inc_dir = metis_root + os.sep + 'include'
-    else:
-        metis_root = ''
-        inc_dir = ''
-    compiler = new_compiler(get_default_compiler())
-    tmp_file_name = tempfile.gettempdir() + os.sep + 'foo.c'
-    f = open(tmp_file_name, 'w')
-    f.write('#include \"metis.h\"\nint main(void){return 0;}')
-    f.close()
-
-    def remove():
-        try:
-            os.remove(tmp_file_name)
-        except OSError:
-            pass
-    try:
-        include_dirs = [] if inc_dir == '' else [inc_dir]
-        compiler.compile([tmp_file_name], include_dirs=include_dirs)
-        remove()
-        return True, metis_root
-    except distutils.errors.CompileError:
-        remove()
-        return False, ''
-
-
-flag_root = config_libmetis()
-
-_inc_dirs = [
-    numpy.get_include(),
-]
-
-_libs = None
-_lib_dir = None
-_rpath = None
-
-_srcs = ['pymetis_mesh/_wrapper.c']
-
-if not flag_root[0]:
-    _inc_dirs += [
-        'pymetis_mesh/src/GKlib',
-        'pymetis_mesh/src/libmetis',
-        'pymetis_mesh/src/include'
-    ]
-    _srcs += glob.glob('pymetis_mesh/src/GKlib/*.c') + \
-        glob.glob('pymetis_mesh/src/libmetis/*.c')
-elif flag_root[1] != '':
-    _inc_dirs += [flag_root[1] + os.sep + 'include']
-    _libs = ['metis']
-    _lib_dir = [flag_root[1] + os.sep + 'lib']
-    _rpath = [flag_root[1] + os.sep + 'lib']
-else:
-    _libs = ['metis']
-
+# meta data
 
 install_requires = [
     'numpy',
+    'setuptools',
 ]
-
-ext = Extension(
-    'pymetis_mesh._wrapper',
-    _srcs,
-    include_dirs=_inc_dirs,
-    extra_compile_args=['-w', '-O3'],
-    libraries=_libs,
-    library_dirs=_lib_dir,
-    runtime_library_dirs=_rpath
-)
-
+package_data = {
+    'pymetis_mesh': [
+        '*.pxd',
+        '*.pyx',
+        _join('src', 'include', '*'),
+        _join('src', 'libparmetis', '*'),
+        _join('src', 'metis', 'GTKlib', '*'),
+        _join('src', 'metis', 'include', '*'),
+        _join('src', 'metis', 'libmetis', '*'),
+    ]
+}
 classifiers = [
     'Programming Language :: Python',
     'Programming Language :: Python :: 2.7',
@@ -113,6 +49,24 @@ classifiers = [
 ]
 
 
+def gen_metis_ext():
+    _src_root = _join('pymetis_mesh', 'src')
+    _metis_src = _join(_src_root, 'metis')
+    _srcs = [_join('pymetis_mesh', '_wrapper.c')]
+    _srcs += glob.glob(_join(_metis_src, 'GKlib', '*.c')) + \
+        glob.glob(_join(_metis_src, 'libmetis', '*.c'))
+    _inc_dirs = [
+        numpy.get_include(),
+        _join(_metis_src, 'GKlib'),
+        _join(_metis_src, 'libmetis'),
+        _join(_metis_src, 'include'),
+    ]
+    return [Extension('pymetis_mesh._wrapper', _srcs, include_dirs=_inc_dirs,)]
+
+
+exts = gen_metis_ext()
+
+
 setup(
     name='pymetis_mesh',
     version=version,
@@ -123,17 +77,9 @@ setup(
     keywords='Math',
     license='MIT',
     url='https://github.com/chiao45/pymetis_mesh',
-    packages=['pymetis_mesh'],
-    package_data={
-        'pymetis_mesh': [
-            '*.pxd',
-            '*.pyx',
-            'src/GKlib/*',
-            'src/include/*',
-            'src/libmetis/*'
-        ]
-    },
+    packages=find_packages(),
+    package_data=package_data,
     install_requires=install_requires,
-    ext_modules=[ext],
+    ext_modules=exts,
     classifiers=classifiers
 )
