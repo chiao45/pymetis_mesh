@@ -35,6 +35,7 @@ package_data = {
         '*.pxd',
         '*.pyx',
         '*.c',
+        '*.h',
         _join('src', 'include', '*'),
         _join('src', 'libparmetis', '*'),
         _join('src', 'metis', 'GTKlib', '*'),
@@ -86,6 +87,7 @@ def gen_parmetis_ext():
     _srcs = [_join('pymetis_mesh', '_parwrapper.c')]
     _srcs += glob.glob(_join(_src_root, 'libparmetis', '*.c'))
     _inc_dirs = [
+        '.',
         numpy.get_include(),
         mpi4py.get_include(),
         _join(_src_root, 'include'),

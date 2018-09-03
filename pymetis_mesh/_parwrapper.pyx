@@ -18,6 +18,9 @@ ctypedef parmetis.real_t real_t
 ctypedef MPI.Comm comm_t
 ctypedef cmpi.MPI_Comm c_comm_t
 
+cdef extern from 'mpi-compat.h':
+    pass
+
 import numpy as np
 from ._version import __version__
 from .errors import *
