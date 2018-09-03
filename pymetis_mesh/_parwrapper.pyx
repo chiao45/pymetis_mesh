@@ -1,6 +1,13 @@
 #!python
 #cython: boundscheck=False, embedsignature=True, wraparound=False
 
+"""ParMETIS wrapper for partitioning `finite element` meshes
+
+This module wraps routines for partitioning/repartioning FE unstructured meshes
+in parallel environments.
+"""
+
+from libc.stdlib cimport malloc, free
 cimport pymetis_mesh.parmetis as parmetis
 cimport numpy as np
 cimport mpi4py.libmpi as cmpi
@@ -59,6 +66,33 @@ def parpart_mesh(
     one_base=False,
     debug=0,
     idx_t[::1] epart=None):
+    """The main interface
+
+    Parameters
+    ----------
+    eptr : memory view
+        distributed CRS element index pointer array
+    eind : memory view
+        distributed CRS element connectivity array, IDs are global
+    nparts : int (optional)
+        number of partitions, default is communicator size
+    comm : MPI.Comm (optional)
+        default communicator is ``MPI_COMM_WORLD``
+    tpwgts : memory view (optional)
+        partition weights, default is [1/nparts ...]
+    ncommon : int (optional)
+        number of shared nodes that forms a cut, default is 2
+    one_base : bool (optional)
+        ``True`` if using Fortran-based index, default is ``False``
+    debug : int (optional)
+        debugging flags, default is 0, i.e. no debug
+    epart : memory view (optional)
+        buffer, if specified, must be the size of local elements
+
+    Returns
+    -------
+    dict with keys ``cuts`` and ``epart``
+    """
     cdef:
         c_comm_t _comm = cmpi.MPI_COMM_WORLD if comm is None else comm.ob_mpi
         idx_t _nparts = <idx_t> nparts
@@ -68,11 +102,13 @@ def parpart_mesh(
         real_t ubvec = 1.05
         idx_t opts[10]
         real_t *_tpwgts = &tpwgts[0] if tpwgts is not None else NULL
+        int can_free = 0
         np.ndarray[np.int32_t, ndim=1] elmdist
         int size
         int rank
         idx_t _ncommon = ncommon
         int ret
+        int i
         int ne = len(eptr) - 1
         Options _foo
 
@@ -82,21 +118,28 @@ def parpart_mesh(
 
     if not _run_par(_comm):
         raise MetisError('use part_mesh for serial runs')
+    # safe to query comm size and rank
+    size = _par_size(_comm)
+    rank = _par_rank(_comm)
+    if _nparts <= 0:
+        _nparts = size
+    if _nparts <= 0:
+        raise MetisInputError('nparts')
     if not (_tpwgts == NULL or len(tpwgts) == _nparts):
         raise MetisInputError('tpwgts')
     if ne < 0:
         raise MetisInputError('eptr')
     if debug < 0:
         raise MetisInputError('debug')
+    if _tpwgts is NULL:
+        can_free = 1
+        _tpwgts = <real_t *> malloc(_nparts * sizeof(real_t))
+        if _tpwgts is NULL:
+            raise MetisMemoryError('bad alloc')
+        for i in range(_nparts):
+            _tpwgts[i] = 1./_nparts
     opts[0] = 1 if debug else 0
     opts[1] = <idx_t> debug
-    # safe to query comm size and rank
-    size = _par_size(_comm)
-    if _nparts <= 0:
-        _nparts = size
-    if _nparts <= 0:
-        raise MetisInputError('nparts')
-    rank = _par_rank(_comm)
     elmdist = np.empty(size+1, dtype=np.int32)
     elmdist[0] = 0
     elmdist[rank+1] = ne
@@ -104,14 +147,13 @@ def parpart_mesh(
         &elmdist[rank+1],
         1,
         parmetis.mpi_idx_t,
-        <void *> (elmdist.data+1),
+        &elmdist[1],
         1,
         parmetis.mpi_idx_t,
         _comm
     )
     if ret:
         raise MetisError('MPI_Allgather failed')
-    cdef int i
     for i in range(size):
         elmdist[i+1] += elmdist[i]
     if epart is None:
@@ -139,7 +181,9 @@ def parpart_mesh(
         <idx_t *> _epart.data,
         &_comm
     )
+    if can_free:
+        free(_tpwgts)
     if ret == 1:
-        return {'cuts': edgecut, 'epart': epart}
+        return {'cuts': edgecut, 'epart': _epart}
     else:
         raise MetisError('routine didn\'t return METIS_OK')
