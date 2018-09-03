@@ -18,6 +18,8 @@ addons:
     packages:
       - python-dev
       - python3-dev
+      - openmpi-bin
+      - libopenmpi-dev
 
 before_install:
   - pip install -r requirements.txt
@@ -26,4 +28,4 @@ install:
   - pip install .
 
 script:
-  - cd tests/ && py.test
+  - cd tests/ && mpiexec -np 2 py.test
