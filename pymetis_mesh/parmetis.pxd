@@ -8,6 +8,9 @@ cdef extern from 'src/include/parmetis.h' nogil:
     ctypedef libmetis.idx_t idx_t
     ctypedef libmetis.real_t real_t
 
+    cmpi.MPI_Datatype mpi_idx_t 'IDX_T'
+    cmpi.MPI_Datatype mpi_real_t 'REAL_T'
+
     int ParMETIS_V3_Mesh2Dual(
         idx_t *elmdist,
         idx_t *eptr,
