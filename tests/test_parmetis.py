@@ -1,14 +1,18 @@
 import numpy as np
 from load_mesh import load_mesh
 import mpi_helper as mpi
+try:
+    from pymetis_mesh.parmetis import *
+    NO_PARMETIS = False
+except ImportError:
+    NO_PARMETIS = True
 
 import pytest
 
 
-@pytest.mark.skipif(mpi.NO_MPI4PY or mpi.COMM_SIZE != 2, reason='no mpi4py')
+@pytest.mark.skipif(NO_PARMETIS or mpi.NO_MPI4PY or mpi.COMM_SIZE != 2, reason='no mpi4py')
 def test_parmetis():
     try:
-        from pymetis_mesh.parmetis import *
         comm = mpi.comm
         if comm.size != 2:
             mpi.exit_code = 1
