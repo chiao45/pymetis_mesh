@@ -10,7 +10,7 @@ except ImportError:
 import pytest
 
 
-@pytest.mark.skipif(NO_PARMETIS or mpi.NO_MPI4PY or mpi.COMM_SIZE != 2, reason='no mpi4py')
+# @pytest.mark.skipif(NO_PARMETIS or mpi.NO_MPI4PY or mpi.COMM_SIZE != 2, reason='no mpi4py')
 def test_parmetis():
     try:
         comm = mpi.comm
