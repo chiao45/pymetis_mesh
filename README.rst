@@ -1,32 +1,8 @@
-Partition *finite element* meshes with METIS in Python
-=======================================================
+DEPRECATED!
+===========
 
-.. image:: https://travis-ci.org/chiao45/pymetis_mesh.svg?branch=master
-    :target: https://travis-ci.org/chiao45/pymetis_mesh
-.. image:: https://img.shields.io/pypi/v/pymetis_mesh.svg?branch=master
-    :target: https://pypi.org/project/pymetis-mesh/
+.. image:: http://unmaintained.tech/badge.svg
+  :target: http://unmaintained.tech
+  :alt: No Maintenance Intended
 
-Introduction
-------------
-
-This repository contains a simple Python wrapper of ``METIS_PartMeshDual`` and
-``METIS_PartMeshNodal``, which can partition finite element unstructured meshes
-either element-wisely or node-wisely, resp. The wrapper script is written in
-Cython, and the C code has been already generated. Notice that regenerating the
-C source code is pretty straightforward.
-
-Installation
-------------
-
-.. code-block:: console
-
-    $ pip3 install pymetis_mesh
-
-License
--------
-
-MIT License
-
-Copyright (c) 2018 Qiao Chen
-
-``METIS`` and ``ParMETIS`` have their own licenses, please check the source directory.
+New METIS wrapper https://github.com/chiao45/mgmetis
